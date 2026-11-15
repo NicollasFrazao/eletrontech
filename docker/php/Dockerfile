@@ -1,6 +1,6 @@
 # PHP 8.4 with the extensions the application and its quality gate need: pdo_mysql for MySQL,
 # intl/bcmath for formatting and decimal maths, pcntl for the queue worker, pcov for coverage.
-FROM php:8.4-cli
+FROM php:8.5-cli
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git unzip libzip-dev libicu-dev \
