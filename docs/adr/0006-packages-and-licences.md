@@ -62,7 +62,7 @@ Since E1 to E3 the calculators and the unit converter have been open to anyone.
   - the admin panel (E8, #11) manages them, prices included;
   - they are **inserted by a migration**, not a seeder: a sign-up needs the free package, so every
     database, the tests' included, has it from its schema.
-- **The packages, rebuilt from their names** (to be confirmed by the owner):
+- **The packages, rebuilt from their names** (confirmed by the owner):
 
   | Package | Tools |
   | --- | --- |
@@ -98,5 +98,5 @@ Since E1 to E3 the calculators and the unit converter have been open to anyone.
   accounts are development ones.
 - The feature tests of the tools sign in with a licence (`tests/Support/Licensing/Licensed.php`).
 - Prices are not modelled yet (E8). Payment is the future issue #20.
-- The package contents above are an assumption recorded here and in tech-debt, until the owner
-  confirms or changes them.
+- The package contents above are a reconstruction, not the 2015 data; the owner confirmed them.
+  Changing one is a new migration, or E8's panel.

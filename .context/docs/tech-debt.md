@@ -16,7 +16,6 @@ points here or to the issue.
 | Item | Why it is still open | Closes in |
 | --- | --- | --- |
 | `DatabaseSeeder` seeds nothing | The tools and packages are reference data, inserted by a migration (ADR 0006); there is no demo data yet | when demo data is needed |
-| The tools of each package are rebuilt from the 2015 package names (Basic free; Advanced, Light, Measure, Tester, Golden for sale), not from the 2015 data, which is not in the repository | Only the names and "tools separated by categories" survive; the table is in ADR 0006 | to be confirmed by the owner (raised in the E5 pull request) |
 | Packages and tools have no price | The admin panel manages tools, packages and prices; payments are a future issue | #11, #20 |
 | The Draw package and the floor-plan editor tool are not in the catalogue | A package whose only tool does not exist yet would sell nothing | #9 |
 | The home page is a placeholder without Vite assets | The interface is designed in E9 | #12 |
