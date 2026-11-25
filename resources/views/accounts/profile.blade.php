@@ -4,6 +4,7 @@
     $preferences = $account->profile()->preferences;
 @endphp
 <x-layouts.account :title="__('accounts.title.profile')" :night-mode="$preferences->isNightMode">
+    <p><a href="{{ route('agenda') }}">{{ __('agenda.title') }}</a> · <a href="{{ route('files.root') }}">{{ __('files.title') }}</a></p>
     <section>
         <h2>{{ __('accounts.sections.images') }}</h2>
         @foreach (\App\Domain\Account\ImageKind::cases() as $kind)

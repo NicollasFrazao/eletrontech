@@ -85,6 +85,15 @@ a service. Unit tests never touch the database.
   preferences, deactivation, a session whose account was closed) and the pictures (sizes, formats
   refused, the replaced file deleted). `tests/Support/Account/SignedUp.php` makes accounts through the
   real use cases.
+- `tests/Unit/Domain/Files/`, `tests/Unit/Domain/Agenda/` — every name that could be read as a path,
+  every refused type (including a script named `.pdf` and a page named `.txt`), the limits, the event's
+  fields. `tests/Unit/Application/Files/` and `Agenda/` — the use cases on the in-memory adapters of
+  `tests/Support/Files/` and `Agenda/`: another person's file or folder is not found, a refused file
+  leaves no content behind, a zip holds the tree, an export lands in "Events".
+- `tests/Feature/Files/`, `tests/Feature/Agenda/` — over HTTP on MySQL with a fake disk: uploads under
+  random keys, downloads as attachments with `nosniff`, every refused type, a path sent as a file name,
+  every route on another person's file, folder or event answering 404, nested folders zipped and
+  deleted with their contents, the quota, and the PDF and TXT exports.
 - `tests/Support/Results.php` reads a calculator's result by name: `exact()` (the fraction),
   `shown()` (12 significant digits), `unit()`.
 

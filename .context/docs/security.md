@@ -41,6 +41,13 @@ The 2015 code (tag `v1`) is kept for reference only. Never copy these patterns:
   either way; the recovery form answers the same whether or not the email has an account.
 - Closing an account erases its CPF, email, phone, password and pictures; the name and the activity
   log stay ([ADR 0005](/docs/adr/0005-accounts.md)).
+- Uploads ([ADR 0007](/docs/adr/0007-events-and-files.md)):
+  - an allow-list of types, checked on both the extension and the media type libmagic reads from the
+    bytes;
+  - 10 MiB a file and 100 MiB a person;
+  - stored on the private disk under random keys, so a name never reaches a path;
+  - sent back as attachments with `nosniff`;
+  - another person's event, folder or file is not found.
 - Personal data (CPF, birth date, phone in the original data dictionary) is collected only when a
   feature needs it. The sign-up (E4) takes the CPF and one phone; it does not take the sex or the
   birth date the original asked for.

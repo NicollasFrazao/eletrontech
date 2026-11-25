@@ -146,6 +146,24 @@ the calculator and rounds each number to 12 significant digits; `ListCalculators
   guard, password broker and signed links stay at this edge; the controllers take the account id
   from the session only. `AccountServiceProvider` binds the ports.
 
+## Events and files
+
+`app/Domain/Agenda/` and `app/Domain/Files/` hold the events and the file manager of E7 (#10),
+decided in [ADR 0007](/docs/adr/0007-events-and-files.md):
+
+- Agenda: `Event`, `EventDetails`, the `EventRepository` and `EventDocument` ports. Use cases in
+  `app/Application/Agenda/`: `RecordEvent` (add, update, delete), `ShowAgenda` (a month, a search, one
+  event), `ExportEvents` (PDF or TXT into the folder "Events").
+- Files: `Folder`, `StoredFile`, `EntryName`, `FileType` (the allow-list), `StorageLimit`, and the
+  ports `FileIndex`, `FileStore`, `Archiver`. Use cases in `app/Application/Files/`: `UploadFile`,
+  `CreateFolder`, `ShowFolder`, `DownloadFile`, `DownloadFolder`, `DeleteEntry`, with `FileWriter`,
+  which every stored file goes through.
+- Infrastructure: `EloquentEventRepository`, `EloquentFileIndex` (`events`, `folders`, `files`),
+  `Files/DiskFileStore` (private disk, random keys), `Files/ZipArchiver`,
+  `Agenda/DompdfEventDocument`. `FilesServiceProvider` binds them.
+- Http: `Controllers/Agenda/EventController`, `Controllers/Files/FolderController` and
+  `FileController`. Every download goes out through `Attachment`.
+
 ## Errors
 
 Domain and Application code throws its own exception classes, one per failure the caller can act
