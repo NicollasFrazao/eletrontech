@@ -8,17 +8,28 @@ use App\Http\Controllers\Account\ProfileController;
 use App\Http\Controllers\Account\ProfileImageController;
 use App\Http\Controllers\Account\RegistrationController;
 use App\Http\Controllers\Account\SessionController;
+use App\Http\Controllers\Shop\LicenceController;
+use App\Http\Controllers\Shop\PurchaseController;
+use App\Http\Controllers\Shop\ShopController;
 use App\Http\Controllers\Tools\CalculatorController;
 use App\Http\Controllers\Tools\UnitConverterController;
+use App\Providers\LicensingServiceProvider;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
 
+// Tools (E1 to E3). The forms and the list are open; using a tool needs a licence that covers it (E5).
 Route::get('/tools/unit-converter', [UnitConverterController::class, 'show'])->name('tools.unit-converter');
-Route::post('/tools/unit-converter', [UnitConverterController::class, 'convert'])->name('tools.unit-converter.convert');
-
 Route::get('/tools/calculators', [CalculatorController::class, 'index'])->name('tools.calculators');
-Route::post('/tools/calculators/{calculator}', [CalculatorController::class, 'calculate'])->name('tools.calculators.calculate');
+
+Route::middleware(['auth', 'verified'])->group(function (): void {
+    Route::post('/tools/unit-converter', [UnitConverterController::class, 'convert'])
+        ->middleware('can:'.LicensingServiceProvider::USE_TOOL.",'".UnitConverterController::TOOL."'")
+        ->name('tools.unit-converter.convert');
+    Route::post('/tools/calculators/{calculator}', [CalculatorController::class, 'calculate'])
+        ->middleware('can:'.LicensingServiceProvider::USE_TOOL.',calculator')
+        ->name('tools.calculators.calculate');
+});
 
 // Accounts (E4): sign-up, sign-in, email confirmation, password recovery and the profile.
 Route::middleware('guest')->group(function (): void {
@@ -57,4 +68,13 @@ Route::middleware(['auth', 'verified'])->prefix('profile')->group(function (): v
         ->middleware('throttle:12,1')
         ->name('profile.images.store');
     Route::get('/images/{kind}', [ProfileImageController::class, 'show'])->name('profile.images.show');
+});
+
+// The shop and the licence (E5): packages are bought with the password; nothing is charged.
+Route::middleware(['auth', 'verified'])->group(function (): void {
+    Route::get('/licence', [LicenceController::class, 'show'])->name('licence');
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+    Route::get('/shop/packages/{package}', [ShopController::class, 'show'])->whereNumber('package')->name('shop.package');
+    Route::get('/shop/custom', [ShopController::class, 'custom'])->name('shop.custom');
+    Route::post('/shop/purchases', [PurchaseController::class, 'store'])->middleware('throttle:6,1')->name('shop.purchases');
 });

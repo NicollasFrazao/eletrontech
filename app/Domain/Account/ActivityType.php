@@ -22,6 +22,7 @@ enum ActivityType: string
     case Deactivated = 'deactivated';
     case Reactivated = 'reactivated';
     case Closed = 'closed';
+    case PackageBought = 'package_bought';
 
     /**
      * The action of replacing one of the two pictures.

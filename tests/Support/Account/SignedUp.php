@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Support\Account;
 
-use App\Application\Account\RegisterAccount;
+use App\Application\Account\SignUp;
 use App\Application\Account\VerifyEmail;
 use App\Domain\Account\AccountId;
 use App\Infrastructure\Persistence\Eloquent\User;
 
 /**
- * Accounts made through the real use cases, for the feature tests.
+ * Accounts made through the real use cases, for the feature tests: signed up, so with the initial licence.
  */
 final class SignedUp
 {
@@ -30,7 +30,7 @@ final class SignedUp
      */
     public static function unverified(string $email = 'ana@example.com', string $cpf = '529.982.247-25'): User
     {
-        $id = app(RegisterAccount::class)->handle(AccountKit::input($email, $cpf));
+        $id = app(SignUp::class)->handle(AccountKit::input($email, $cpf));
 
         return User::query()->findOrFail($id->value);
     }
