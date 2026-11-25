@@ -67,9 +67,9 @@ It had the flaws `security.md` lists:
 
 ## Consequences
 
-- E7 requires a signed-in, confirmed account. 2015 also required a licence for events and files.
-  Here they are account features, not tools, so the `use-tool` gate of E5 does not apply. This is
-  recorded in tech-debt for the owner to confirm.
+- E7 requires a signed-in, confirmed account, and no licence. 2015 also required a licence for events
+  and files; here they are account features, not tools, so the `use-tool` gate of E5 does not apply
+  (confirmed by the owner).
 - `ext-zip` (already in the image and the CI) and `ext-fileinfo` (built into PHP) are used. Dompdf
   joins the dependencies.
 - E8's admin panel can read `files` and `events` for statistics; nothing in E7 depends on it.
