@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Domain\Licensing\Package;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -9,8 +10,8 @@ use Illuminate\Support\Facades\DB;
 /*
  * The tools of E1 to E3 and the 2015 packages. Reference data, not demo data: a sign-up needs the free
  * package, so every database has it from its migrations (the admin panel, E8, edits them later). The
- * 2015 database is not in the repository; the tools of each package follow its names and categories,
- * as docs/adr/0006-packages-and-licences.md explains. The floor-plan editor and the Draw package arrive
+ * 2015 database is not in the repository; the tools of each package follow its names, grouped by what
+ * an electrician does with them, as docs/adr/0006-packages-and-licences.md explains. The floor-plan editor and the Draw package arrive
  * with the editor (E6).
  */
 return new class extends Migration
@@ -47,22 +48,25 @@ return new class extends Migration
     ];
 
     /**
-     * The packages: name, kind and tools ('*' for every tool). The first is the free one.
+     * The packages: name, kind and the tools of their theme ('*' for every tool). Each also gets the
+     * everyday tools of Package::ESSENTIALS. The first is the free one.
      */
     private const array PACKAGES = [
-        ['Basic', 'free', [
-            'basic-calculator', 'unit-converter', 'rule-of-three', 'binary-converter', 'area-and-perimeter',
-            'surface-area-and-volume',
-        ]],
+        ['Basic', 'free', ['ohms-law', 'electrical-consumption']],
         ['Advanced', 'ready_made', [
-            'general-power', 'breaker-and-wiring', 'motor-efficiency', 'electrical-consumption', 'bernoulli-equation',
+            'general-power', 'outlet-count', 'general-lighting', 'lighting-power', 'breaker-and-wiring',
+            'motor-efficiency', 'electrical-consumption',
         ]],
         ['Golden', 'ready_made', '*'],
         ['Light', 'ready_made', ['general-lighting', 'lighting-power', 'electrical-consumption']],
-        ['Measure', 'ready_made', ['outlet-count', 'block-count', 'floor-and-wall-tiles', 'btu-sizing']],
+        ['Measure', 'ready_made', [
+            'area-and-perimeter', 'surface-area-and-volume', 'floor-and-wall-tiles', 'block-count', 'btu-sizing',
+            'bernoulli-equation',
+        ]],
         ['Tester', 'ready_made', [
+            'ohms-law', 'series-parallel-resistance', 'conductor-resistance', 'resistor-colour-code',
             'electrical-capacitance', 'electrical-conductance', 'electrical-impedance', 'electrical-inductance',
-            'resistor-colour-code', 'ohms-law', 'conductor-resistance', 'series-parallel-resistance',
+            'binary-converter',
         ]],
     ];
 
@@ -88,7 +92,7 @@ return new class extends Migration
             ]);
             DB::table('package_tool')->insert(array_map(
                 static fn (string $tool): array => ['package_id' => $id, 'tool_id' => $tool],
-                $tools === '*' ? array_keys(self::TOOLS) : $tools,
+                $tools === '*' ? array_keys(self::TOOLS) : array_values(array_unique([...Package::ESSENTIALS, ...$tools])),
             ));
         }
     }

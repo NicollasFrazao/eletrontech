@@ -1,5 +1,5 @@
 <x-layouts.account :title="__('shop.title.shop')">
-    <p>{{ __('shop.intro') }}</p>
+    <p>{{ __('shop.intro') }} {{ __('shop.essentials') }}</p>
     @foreach ($packages as $package)
         <section>
             <h2>{{ $package->name }}</h2>

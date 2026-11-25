@@ -10,6 +10,7 @@ return [
     ],
     'intro' => 'Packages give access to tools for the days you choose. Nothing is charged.',
     'custom_intro' => 'Pick the tools of your own package.',
+    'essentials' => 'Every package also includes the basic calculator, the unit converter and the rule of three.',
     'see_more' => 'See more',
     'tools' => 'Tools',
     'fields' => [

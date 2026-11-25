@@ -62,16 +62,21 @@ Since E1 to E3 the calculators and the unit converter have been open to anyone.
   - the admin panel (E8, #11) manages them, prices included;
   - they are **inserted by a migration**, not a seeder: a sign-up needs the free package, so every
     database, the tests' included, has it from its schema.
-- **The packages, rebuilt from their names** (confirmed by the owner):
+- **The packages, rebuilt from their names and grouped by what an electrician does with them**
+  (remodelled by Claude with the owner's leave):
+  - **Every package carries the everyday tools** (`Package::ESSENTIALS`: basic calculator, unit
+    converter, rule of three), custom ones included. A purchase replaces the licence, so without this
+    rule buying, say, Tester would take the calculator away.
+  - On top of the essentials, each package has its theme:
 
-  | Package | Tools |
-  | --- | --- |
-  | **Basic** (free) | basic calculator, unit converter, rule of three, binary converter, area and perimeter, surface area and volume |
-  | **Advanced** | general power, breaker and wiring, motor efficiency, electrical consumption, Bernoulli |
-  | **Light** | general lighting, lighting power, electrical consumption |
-  | **Measure** | outlet count, block count, floor and wall tiles, BTU sizing |
-  | **Tester** | capacitance, conductance, impedance, inductance, resistor colour code, Ohm's law, conductor resistance, series and parallel resistance |
-  | **Golden** | every tool |
+  | Package | Theme | Tools besides the essentials |
+  | --- | --- | --- |
+  | **Basic** (free, 7 days at sign-up) | a first taste of the electrical side | Ohm's law, electrical consumption |
+  | **Advanced** | a residential installation under NBR 5410 | general power, outlet count, general lighting, lighting power, breaker and wiring, motor efficiency, electrical consumption |
+  | **Light** | lighting design | general lighting, lighting power, electrical consumption |
+  | **Measure** | building quantities | area and perimeter, surface area and volume, floor and wall tiles, block count, BTU sizing, Bernoulli |
+  | **Tester** | components and circuits | Ohm's law, series and parallel resistance, conductor resistance, resistor colour code, capacitance, conductance, impedance, inductance, binary converter |
+  | **Golden** | everything | every tool |
 
   **Draw** and the floor-plan editor arrive together in E6 (#9): a package whose only tool does not
   exist yet would sell nothing.
@@ -98,5 +103,5 @@ Since E1 to E3 the calculators and the unit converter have been open to anyone.
   accounts are development ones.
 - The feature tests of the tools sign in with a licence (`tests/Support/Licensing/Licensed.php`).
 - Prices are not modelled yet (E8). Payment is the future issue #20.
-- The package contents above are a reconstruction, not the 2015 data; the owner confirmed them.
+- The package contents above are a reconstruction, not the 2015 data, and the owner accepted them.
   Changing one is a new migration, or E8's panel.

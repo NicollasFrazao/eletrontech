@@ -1,5 +1,5 @@
 <x-layouts.account :title="__('shop.title.custom')">
-    <p>{{ __('shop.custom_intro') }}</p>
+    <p>{{ __('shop.custom_intro') }} {{ __('shop.essentials') }}</p>
     <form method="POST" action="{{ route('shop.purchases') }}">
         @csrf
         <fieldset>

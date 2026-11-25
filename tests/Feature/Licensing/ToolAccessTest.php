@@ -18,15 +18,16 @@ it('lets a new account use the tools of the free package, and records each use',
 
     $this->actingAs($user)->postJson('/tools/calculators/basic-calculator', ['expression' => '1 + 1'])->assertOk();
     $this->actingAs($user)->postJson('/tools/unit-converter', ['value' => '1', 'from' => 'kilowatt', 'to' => 'watt'])->assertOk();
+    $this->actingAs($user)->postJson('/tools/calculators/ohms-law', ['voltage' => '10', 'current' => '2'])->assertOk();
 
     expect(ToolUseRecord::query()->where('user_id', $user->id)->orderBy('id')->pluck('tool_id')->all())
-        ->toBe(['basic-calculator', 'unit-converter']);
+        ->toBe(['basic-calculator', 'unit-converter', 'ohms-law']);
 });
 
 it('refuses a tool the package does not cover, and records nothing', function (): void {
     $user = SignedUp::verified();
 
-    $this->actingAs($user)->postJson('/tools/calculators/ohms-law', ['voltage' => '10', 'current' => '2'])
+    $this->actingAs($user)->postJson('/tools/calculators/breaker-and-wiring', [])
         ->assertForbidden()
         ->assertJson(['message' => 'Your licence does not cover this tool, or it has ended.']);
 
@@ -49,12 +50,14 @@ it('refuses an account without a licence, as one from before E5', function (): v
     $this->actingAs($user)->postJson('/tools/calculators/basic-calculator', ['expression' => '1 + 1'])->assertForbidden();
 });
 
-it('opens a bought package\'s tools and keeps the rest closed', function (): void {
+it('opens a bought package\'s tools with the everyday ones, and keeps the rest closed', function (): void {
     $user = SignedUp::verified();
     Licensed::buy($user, Licensed::packageId('Tester'), 7);
 
-    $this->actingAs($user)->postJson('/tools/calculators/ohms-law', ['voltage' => '10', 'current' => '2'])->assertOk();
-    $this->actingAs($user)->postJson('/tools/calculators/basic-calculator', ['expression' => '1 + 1'])->assertForbidden();
+    // Past the gate, an empty form is a validation error rather than a refusal.
+    $this->actingAs($user)->postJson('/tools/calculators/resistor-colour-code', [])->assertUnprocessable();
+    $this->actingAs($user)->postJson('/tools/calculators/basic-calculator', ['expression' => '1 + 1'])->assertOk();
+    $this->actingAs($user)->postJson('/tools/calculators/outlet-count', [])->assertForbidden();
 });
 
 it('answers not found for a tool that does not exist, and for a tool that is not a calculator', function (): void {

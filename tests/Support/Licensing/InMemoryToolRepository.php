@@ -9,7 +9,8 @@ use App\Domain\Licensing\ToolId;
 use App\Domain\Licensing\ToolRepository;
 
 /**
- * Tools kept in memory: ohms-law, unit-converter, general-power and basic-calculator unless others are given.
+ * Tools kept in memory: ohms-law, unit-converter, general-power, basic-calculator and rule-of-three unless
+ * others are given.
  */
 final class InMemoryToolRepository implements ToolRepository
 {
@@ -20,7 +21,7 @@ final class InMemoryToolRepository implements ToolRepository
 
     public function __construct(string ...$ids)
     {
-        foreach ($ids === [] ? ['ohms-law', 'unit-converter', 'general-power', 'basic-calculator'] : $ids as $id) {
+        foreach ($ids === [] ? ['ohms-law', 'unit-converter', 'general-power', 'basic-calculator', 'rule-of-three'] : $ids as $id) {
             $this->tools[$id] = new Tool(ToolId::from($id), ucfirst(str_replace('-', ' ', $id)));
         }
     }

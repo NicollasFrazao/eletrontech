@@ -168,6 +168,7 @@ The classes of `app/Domain/Quantity/`. Each stores its value in the coherent uni
 | Package | Pacote (`tb_pacote`) | A set of tools: the free one a new account gets, a ready-made one from the shop, or a custom one (`PackageKind`) |
 | Custom package | Pacote customizado (`ic_custom`) | A package whose tools the user picked |
 | Licence | Licença (`usuario_pacote`) | A user's right to a package between a start and an end date (`dt_inicio`, `dt_termino`, `qt_dias`); one per user. Buying the same package while it runs extends it; anything else replaces it |
+| Everyday tools | — | The basic calculator, the unit converter and the rule of three, which every package carries (`Package::ESSENTIALS`) |
 | Days of use | Dias de uso (`diasUso`) | What a purchase adds: 7 to 365 (`UsageDays`) |
 | Initial licence | Licença inicial | Seven days with a free package, granted on registration |
 | Shop | Eletron Tech Shop (`ETS/`) | The package catalogue and the "purchase" screen |

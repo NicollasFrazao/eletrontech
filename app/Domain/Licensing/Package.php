@@ -10,6 +10,12 @@ namespace App\Domain\Licensing;
 final readonly class Package
 {
     /**
+     * The everyday tools every package carries, so buying a package never takes them away: a purchase
+     * replaces the licence, and with it the package before.
+     */
+    public const array ESSENTIALS = ['basic-calculator', 'unit-converter', 'rule-of-three'];
+
+    /**
      * The tools, keyed by identifier.
      *
      * @var non-empty-array<string, ToolId>

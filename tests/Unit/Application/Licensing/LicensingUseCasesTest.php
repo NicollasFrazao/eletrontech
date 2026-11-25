@@ -20,6 +20,7 @@ use App\Domain\Licensing\PackageId;
 use App\Domain\Licensing\PackageNotForSale;
 use App\Domain\Licensing\PackageRepository;
 use App\Domain\Licensing\Tool;
+use App\Domain\Licensing\ToolId;
 use App\Domain\Licensing\UnknownPackage;
 use App\Domain\Licensing\UnknownTool;
 use Tests\Support\Licensing\InMemoryToolUseLog;
@@ -66,7 +67,7 @@ it('buys a person a license without one, as an account from before E5 has', func
     expect($kit->buy($id, 3, 7)->package->name)->toBe('Golden');
 });
 
-it('builds a custom package from the tools picked, and extends it while the same tools are bought', function (): void {
+it('builds a custom package from the everyday tools and those picked, and extends it while the same tools are bought', function (): void {
     $kit = new LicensingKit;
     $id = $kit->signUp();
 
@@ -75,7 +76,8 @@ it('builds a custom package from the tools picked, and extends it while the same
     $other = $kit->buy($id, null, 10, ['unit-converter']);
 
     expect($first->package->name)->toBe('Custom')
-        ->and(count($first->package->tools()))->toBe(2)
+        ->and(array_map(static fn (ToolId $tool): string => $tool->value, $first->package->tools()))
+        ->toBe(['basic-calculator', 'unit-converter', 'rule-of-three', 'ohms-law', 'general-power'])
         ->and($same->remainingDaysAt($kit->accounts->clock->now()))->toBe(20)
         ->and($other->remainingDaysAt($kit->accounts->clock->now()))->toBe(10)
         ->and($other->package->id)->toEqual($first->package->id);
@@ -146,7 +148,7 @@ it('shows the ready-made packages, one of them, and every tool for a custom pack
 
     expect(array_map(static fn (PackageView $package): string => $package->name, $shop->packages()))->toBe(['Golden', 'Tester'])
         ->and($shop->package(2)->tools[0]->name)->toBe('Ohms law')
-        ->and(count($shop->tools()))->toBe(4)
+        ->and(count($shop->tools()))->toBe(5)
         ->and(static fn (): PackageView => $shop->package(1))->toThrow(UnknownPackage::class);
 });
 

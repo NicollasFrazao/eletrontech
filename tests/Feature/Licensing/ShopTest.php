@@ -73,7 +73,7 @@ it('extends the same package bought again while it runs', function (): void {
     $this->actingAs($user)->get('/licence')->assertSee('27 days left');
 });
 
-it('builds a custom package from the tools picked', function (): void {
+it('builds a custom package from the tools picked, with the everyday ones', function (): void {
     $user = SignedUp::verified();
 
     $this->actingAs($user)->get('/shop/custom')->assertOk()->assertSee('value="ohms-law"', false);
@@ -85,7 +85,8 @@ it('builds a custom package from the tools picked', function (): void {
 
     $custom = PackageRecord::query()->where('owner_id', $user->id)->sole();
     expect(licenceOf($user)->package_id)->toBe($custom->id)
-        ->and($custom->tools->pluck('id')->all())->toBe(['ohms-law', 'outlet-count']);
+        ->and($custom->tools->pluck('id')->all())
+        ->toBe(['basic-calculator', 'ohms-law', 'outlet-count', 'rule-of-three', 'unit-converter']);
     $this->actingAs($user)->postJson('/tools/calculators/ohms-law', ['voltage' => '10', 'current' => '2'])->assertOk();
 });
 

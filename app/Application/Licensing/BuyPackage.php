@@ -24,7 +24,8 @@ use App\Domain\Licensing\UsageDays;
 
 /**
  * Buys a package for some days, confirmed with the buyer's password; nothing is charged, as in 2015
- * (payments are #20). The licence is replaced, or extended when it is the same package and running.
+ * (payments are #20). The licence is replaced, or extended when it is the same package and running. A
+ * custom package gets the everyday tools (`Package::ESSENTIALS`) besides the ones picked.
  */
 final readonly class BuyPackage
 {
@@ -79,8 +80,14 @@ final readonly class BuyPackage
             return $package->kind === PackageKind::Custom ? throw UnknownPackage::withId($input->packageId) : $package;
         }
 
-        $tools = array_map(ToolId::from(...), array_values(array_unique($input->customTools)));
+        $picked = array_values(array_unique($input->customTools));
 
-        return $tools === [] ? throw EmptyCustomPackage::create() : $this->packages->customFor($input->buyer, $tools);
+        if ($picked === []) {
+            throw EmptyCustomPackage::create();
+        }
+
+        $tools = array_map(ToolId::from(...), array_values(array_unique([...Package::ESSENTIALS, ...$picked])));
+
+        return $this->packages->customFor($input->buyer, $tools);
     }
 }
