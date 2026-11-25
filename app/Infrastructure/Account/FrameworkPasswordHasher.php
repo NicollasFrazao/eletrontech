@@ -16,6 +16,11 @@ use SensitiveParameter;
 final class FrameworkPasswordHasher implements PasswordHasher
 {
     /**
+     * The random bytes the decoy hash is made from.
+     */
+    private const int DECOY_BYTES = 16;
+
+    /**
      * A hash of a random text, made once per process, that no typed password matches.
      */
     private ?string $decoy = null;
@@ -45,7 +50,7 @@ final class FrameworkPasswordHasher implements PasswordHasher
      */
     public function spendCheck(#[SensitiveParameter] string $typed): void
     {
-        $this->decoy ??= $this->hasher->make(bin2hex(random_bytes(16)));
+        $this->decoy ??= $this->hasher->make(bin2hex(random_bytes(self::DECOY_BYTES)));
         $this->hasher->check($typed, $this->decoy);
     }
 }

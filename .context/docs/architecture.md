@@ -48,8 +48,9 @@ new ADR.
   controller builds the DTO from a form request, calls the handler, maps the result to a view or a
   resource. Controllers hold no rules.
 - **Eloquent models** live in `app/Infrastructure/Persistence/Eloquent/` and never leave it: a
-  repository maps them to domain entities. The default `User` model is there for the framework's
-  auth guard until accounts are modelled (E4, #7).
+  repository maps them to domain entities. `User` is the row of an account, which the framework's
+  guard, password broker and email verification read; `EloquentAccountRepository` maps it to the
+  domain's `Account` (see "Accounts" below).
 - **Framework glue** (middleware, jobs, mailables, notifications): Infrastructure or Http, by who
   calls it.
 
@@ -121,6 +122,30 @@ the calculator and rounds each number to 12 significant digits; `ListCalculators
 `App\Http\Controllers\Tools\CalculatorController` serves both as JSON (`GET /tools/calculators`,
 `POST /tools/calculators/{id}`), mapping `InvalidInput` to a validation error on its field.
 
+## Accounts
+
+`app/Domain/Account/` holds the account of E4 (#7), decided in
+[ADR 0005](/docs/adr/0005-accounts.md):
+
+- `Account` (an id, then `PersonalDetails`, `Access` and `Profile`, immutable value objects it
+  replaces), the value objects of a sign-up (`Cpf`, `PhoneNumber`, `ContactPhone`, `EmailAddress`,
+  `PersonName`, `PlainPassword`, `HashedPassword`) and `InvalidAccountData`, which names the
+  `AccountField` it refused. Deactivation is a reactivation deadline 30 days ahead; `signIn()` says
+  whether a sign-in reactivates the account or finds it expired.
+- Ports: `AccountRepository` (only open accounts are found; `close()` erases the CPF, email, phone,
+  password and pictures and keeps the name), `ActivityLog`, `PasswordHasher`, `Clock`, `ImageStore`.
+- `app/Application/Account/`: one handler per action (`RegisterAccount`, `SignIn`, `SignOut`,
+  `VerifyEmail`, `ResetPassword`, `ChangePassword`, `UpdateProfile`, `UpdatePreferences`,
+  `ReplaceProfileImage`, `ShowProfileImage`, `DeactivateAccount`, `ViewProfile`), with the services
+  they share: `AccountCloser`, `PasswordWriter`, `ActivityRecorder`.
+- `app/Infrastructure/`: `Persistence/EloquentAccountRepository` and `EloquentActivityLog`
+  (`activities`), `Account/FrameworkPasswordHasher` (bcrypt), `SystemClock` and `GdImageStore`
+  (pictures re-encoded with GD on the private `local` disk).
+- `app/Http/Controllers/Account/`: sign-up, session, email verification, password reset, profile
+  and profile pictures, with their form requests in `app/Http/Requests/Account/`. The framework's
+  guard, password broker and signed links stay at this edge; the controllers take the account id
+  from the session only. `AccountServiceProvider` binds the ports.
+
 ## Errors
 
 Domain and Application code throws its own exception classes, one per failure the caller can act
@@ -136,5 +161,7 @@ and the first controller (`app/Http/Controllers/Tools/`). E2 (#5) added the calc
 the twelve electrical calculators (`app/Domain/Calculator/`), the use case that runs any of them
 (`app/Application/Calculation/`) and their JSON endpoint. E3 (#6) added twelve general calculators on
 the same contract, so every 2015 calculation tool, web or mobile, is in the catalogue (the mobile
-spirit level reads a sensor and is not a calculation; see [tech-debt.md](tech-debt.md)). The rest is the
-context-base tooling in `app/Console/` (`context:export`, `context:check`) and the framework defaults.
+spirit level reads a sensor and is not a calculation; see [tech-debt.md](tech-debt.md)). E4 (#7) added
+the accounts (see "Accounts" above), the first repository and the first pages behind sign-in. The rest
+is the context-base tooling in `app/Console/` (`context:export`, `context:check`) and the framework
+defaults.

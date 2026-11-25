@@ -97,7 +97,7 @@ final class Account
      */
     public function signIn(DateTimeImmutable $now): SignInEffect
     {
-        if ($this->access->reactivationDeadline === null) {
+        if (! $this->access->reactivationDeadline instanceof DateTimeImmutable) {
             return SignInEffect::None;
         }
 
@@ -115,6 +115,6 @@ final class Account
      */
     public function hasExpired(DateTimeImmutable $now): bool
     {
-        return $this->access->reactivationDeadline !== null && $now > $this->access->reactivationDeadline;
+        return $this->access->reactivationDeadline instanceof DateTimeImmutable && $now > $this->access->reactivationDeadline;
     }
 }

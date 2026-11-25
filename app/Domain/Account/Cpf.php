@@ -17,6 +17,11 @@ final readonly class Cpf
     private const int LENGTH = 11;
 
     /**
+     * The digits the check digits are computed from.
+     */
+    private const int BASE_LENGTH = 9;
+
+    /**
      * The modulus of the check-digit algorithm.
      */
     private const int MODULUS = 11;
@@ -43,13 +48,22 @@ final readonly class Cpf
         if (
             preg_match('/^\d{11}$/', $digits) !== 1
             || str_repeat($digits[0], self::LENGTH) === $digits
-            || self::checkDigit(substr($digits, 0, -2)) !== (int) $digits[self::LENGTH - 2]
-            || self::checkDigit(substr($digits, 0, -1)) !== (int) $digits[self::LENGTH - 1]
+            || self::withCheckDigits(substr($digits, 0, self::BASE_LENGTH)) !== $digits
         ) {
             throw InvalidAccountData::of(AccountField::Cpf, 'not a valid CPF');
         }
 
         return new self($digits);
+    }
+
+    /**
+     * The nine base digits followed by their two check digits.
+     */
+    private static function withCheckDigits(string $base): string
+    {
+        $first = self::checkDigit($base);
+
+        return $base.$first.self::checkDigit($base.$first);
     }
 
     /**

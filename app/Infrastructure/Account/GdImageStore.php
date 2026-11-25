@@ -36,6 +36,16 @@ final readonly class GdImageStore implements ImageStore
     private const int MAX_PIXELS = 40_000_000;
 
     /**
+     * The length of the random part of a stored name.
+     */
+    private const int NAME_LENGTH = 40;
+
+    /**
+     * Halves the margin a centred cut leaves, one half on each side.
+     */
+    private const int SIDES = 2;
+
+    /**
      * The formats accepted, by the type getimagesize reports.
      */
     private const array FORMATS = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP];
@@ -56,7 +66,7 @@ final readonly class GdImageStore implements ImageStore
         imagejpeg($picture, null, self::QUALITY);
         $jpeg = (string) ob_get_clean();
 
-        $path = self::FOLDER.'/'.Str::random(40).'.jpg';
+        $path = self::FOLDER.'/'.Str::random(self::NAME_LENGTH).'.jpg';
         $this->disk->put($path, $jpeg);
 
         return $path;
@@ -87,11 +97,13 @@ final readonly class GdImageStore implements ImageStore
     {
         $info = @getimagesizefromstring($contents);
 
-        if (
-            $info === false
-            || ! in_array($info[2], self::FORMATS, true)
-            || $info[0] * $info[1] > self::MAX_PIXELS
-        ) {
+        if ($info === false) {
+            throw UnreadableImage::upload();
+        }
+
+        [$width, $height, $type] = $info;
+
+        if (! in_array($type, self::FORMATS, true) || $width * $height > self::MAX_PIXELS) {
             throw UnreadableImage::upload();
         }
 
@@ -121,8 +133,8 @@ final readonly class GdImageStore implements ImageStore
             $source,
             0,
             0,
-            intdiv($width - $cropWidth, 2),
-            intdiv($height - $cropHeight, 2),
+            intdiv($width - $cropWidth, self::SIDES),
+            intdiv($height - $cropHeight, self::SIDES),
             $targetWidth,
             $targetHeight,
             $cropWidth,

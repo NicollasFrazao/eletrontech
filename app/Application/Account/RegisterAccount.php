@@ -66,7 +66,7 @@ final readonly class RegisterAccount
      */
     private function release(?Account $holder, AlreadyRegistered $refusal): void
     {
-        if ($holder === null) {
+        if (! $holder instanceof Account) {
             return;
         }
 

@@ -10,6 +10,7 @@ use App\Domain\Account\AccountRepository;
 use App\Domain\Account\ActivityLog;
 use App\Domain\Account\ActivityType;
 use App\Domain\Account\Clock;
+use DateTimeImmutable;
 
 /**
  * Confirms the account's email address, once; checking the signed link is the caller's.
@@ -31,7 +32,7 @@ final readonly class VerifyEmail
     {
         $account = $this->accounts->get($id);
 
-        if ($account->access()->emailVerifiedAt !== null) {
+        if ($account->access()->emailVerifiedAt instanceof DateTimeImmutable) {
             return;
         }
 

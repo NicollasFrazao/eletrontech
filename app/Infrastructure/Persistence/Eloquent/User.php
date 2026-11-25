@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Eloquent;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -29,16 +30,10 @@ use Illuminate\Support\Carbon;
  * @property ?Carbon $closed_at
  * @property ?string $remember_token
  */
+#[Hidden(['password', 'remember_token'])]
 final class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
-
-    /**
-     * Keeps the password hash and the remember token out of arrays and JSON.
-     *
-     * @var list<string>
-     */
-    protected $hidden = ['password', 'remember_token'];
 
     /**
      * Casts the dates and the preferences. The password is hashed by the domain's PasswordHasher

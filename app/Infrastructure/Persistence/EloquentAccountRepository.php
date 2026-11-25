@@ -180,7 +180,11 @@ final readonly class EloquentAccountRepository implements AccountRepository
                 ),
             );
         } catch (InvalidAccountData $invalid) {
-            throw new UnexpectedValueException("The account {$user->id} holds a value no sign-up writes.", previous: $invalid);
+            throw new UnexpectedValueException(
+                "The account {$user->id} holds a value no sign-up writes.",
+                $invalid->getCode(),
+                previous: $invalid,
+            );
         }
     }
 }

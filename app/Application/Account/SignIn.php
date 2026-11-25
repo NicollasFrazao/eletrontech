@@ -37,7 +37,7 @@ final readonly class SignIn
     {
         $account = $this->find($email);
 
-        if ($account === null) {
+        if (! $account instanceof Account) {
             $this->hasher->spendCheck($password);
 
             throw InvalidCredentials::create();

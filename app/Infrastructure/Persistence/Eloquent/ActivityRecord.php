@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Eloquent;
 
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\Unguarded;
+use Illuminate\Database\Eloquent\Attributes\WithoutTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
@@ -15,29 +18,11 @@ use Illuminate\Support\Carbon;
  * @property string $type
  * @property Carbon $occurred_at
  */
+#[Unguarded]
+#[Table(name: 'activities')]
+#[WithoutTimestamps]
 final class ActivityRecord extends Model
 {
-    /**
-     * The rows carry their own time of occurrence.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * The table the log is kept in.
-     *
-     * @var string|null
-     */
-    protected $table = 'activities';
-
-    /**
-     * Every column is written by EloquentActivityLog, never from a request.
-     *
-     * @var array<string>
-     */
-    protected $guarded = [];
-
     /**
      * Casts the time of occurrence.
      *
