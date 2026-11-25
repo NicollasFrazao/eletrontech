@@ -58,7 +58,7 @@ services:
             retries: 30
 
     mailpit:
-        image: axllent/mailpit:v1.32
+        image: axllent/mailpit:v1.34
         ports:
             - "${FORWARD_MAILPIT_PORT:-8025}:8025"
 
