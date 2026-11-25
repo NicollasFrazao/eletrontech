@@ -26,7 +26,7 @@ status check, named exactly as in the first column.
 | `deptrac` | `composer deptrac` | Deptrac 4 | `deptrac.yaml` |
 | `rector` | `composer rector` | Rector 2 + `driftingly/rector-laravel`, dry run | `rector.php` |
 | `composer-unused` | `composer unused` | composer-unused | — |
-| `test` | `composer test:coverage` | Pest 4, pcov, `--min=80` | `phpunit.xml`, `tests/Pest.php` |
+| `test` | `composer test:coverage` | Pest 4, pcov, `--min=80`, on MySQL 8.4 (`eletrontech_testing`; a MySQL service in CI) | `phpunit.xml`, `tests/Pest.php` |
 | `composer-audit` | `composer audit` | Composer | — |
 | `context` | `composer context:check` | `php artisan context:check` | `app/Console/ContextBase/AgentSurfaces.php` |
 

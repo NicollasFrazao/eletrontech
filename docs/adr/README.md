@@ -9,3 +9,4 @@ decided, what else was considered, and what it costs. A superseded record stays,
 | [0002](0002-exact-arithmetic-for-quantities.md) | Exact arithmetic for physical quantities with brick/math; amends 0001 so the Domain may use `Brick\Math` | Accepted |
 | [0003](0003-calculators-behind-one-contract.md) | Calculators as interchangeable domain services behind one `Calculator` contract, with a catalogue, an input schema and NBR 5410 tables as data | Accepted |
 | [0004](0004-arithmetic-expressions-without-eval.md) | Arithmetic expressions evaluated exactly by a recursive-descent parser of our own, never `eval`; a text input kind for the calculator contract | Accepted |
+| [0005](0005-accounts.md) | Accounts in the domain (CPF, phone, deactivation for 30 days, closure that erases), Laravel's guard and password broker at the edge | Accepted |

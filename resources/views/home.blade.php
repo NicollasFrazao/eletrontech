@@ -17,6 +17,14 @@
         <p>Version 2 is being rewritten. The original 2015 project is kept at the
             <a href="https://github.com/NicollasFrazao/eletrontech/tree/v1">v1 tag</a>.</p>
         <p>Available now: the <a href="{{ route('tools.unit-converter') }}">{{ __('unit-converter.title') }}</a>.</p>
+        @auth
+            <p><a href="{{ route('profile') }}">{{ __('accounts.title.profile') }}</a></p>
+        @else
+            <p><a href="{{ route('login') }}">{{ __('accounts.title.login') }}</a> · <a href="{{ route('register') }}">{{ __('accounts.title.register') }}</a></p>
+        @endauth
+        @if (session('status'))
+            <p role="status">{{ session('status') }}</p>
+        @endif
     </main>
 </body>
 </html>

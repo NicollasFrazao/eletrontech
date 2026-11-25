@@ -22,7 +22,10 @@ The 2015 code (tag `v1`) is kept for reference only. Never copy these patterns:
 | Connection credentials in seven `Conexao.php` files | `.env` only; `.env` is git-ignored, `.env.example` holds no secret |
 | File downloads blocked by extension (`.php`, `.html`) | Files stored outside `public/` on a private disk, served through a controller that checks ownership, with a forced download content type |
 | No CSRF protection | Laravel's CSRF middleware on every web form |
-| Login lockout planned (NF 1.4) but weak | Rate limiting on login and password recovery |
+| Login lockout planned (NF 1.4) but weak; a fixed `sleep(3)` | Five failed sign-ins per email and address a minute; sign-up, recovery, verification and uploads throttled |
+| Recovery emailed the password itself; the confirmation link carried a Base64 id that anyone could forge | The framework's password broker (hashed, expiring tokens) and signed verification links |
+| "Keep me signed in" cookie held the email and the Base64 password | The framework's remember-me token, replaced whenever the password changes |
+| Changing the password did not ask for the current one; deactivation and profile edits took the user id from the request | The current password is asked for; every account action works on the session's account only |
 | The basic calculator ran the typed text with JavaScript's `eval` | A parser of our own that accepts only numbers, four operators and brackets ([ADR 0004](/docs/adr/0004-arithmetic-expressions-without-eval.md)); no `eval` anywhere |
 
 ## Rules
@@ -34,8 +37,13 @@ The 2015 code (tag `v1`) is kept for reference only. Never copy these patterns:
 - Uploaded files: size and MIME limits, random stored names, never executed, never under `public/`.
 - Output in Blade with `{{ }}`; `{!! !!}` only for HTML the application generated itself.
 - Secrets never in code, tests, logs or fixtures. The `APP_KEY` in `phpunit.xml` is test-only.
+- A sign-in answers the same for an unknown email and a wrong password, and spends one hash check
+  either way; the recovery form answers the same whether or not the email has an account.
+- Closing an account erases its CPF, email, phone, password and pictures; the name and the activity
+  log stay ([ADR 0005](/docs/adr/0005-accounts.md)).
 - Personal data (CPF, birth date, phone in the original data dictionary) is collected only when a
-  feature needs it.
+  feature needs it. The sign-up (E4) takes the CPF and one phone; it does not take the sex or the
+  birth date the original asked for.
 
 ## Automated checks
 

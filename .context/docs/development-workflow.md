@@ -27,7 +27,10 @@ make up      # app, queue worker, MySQL 8.4 and Mailpit; waits until healthy
 
 - App: <http://localhost:8000> (health check at `/up`).
 - Mailpit (every outgoing email): <http://localhost:8025>.
-- MySQL: `localhost:3306`, database, user and password `eletrontech`.
+- MySQL: `localhost:3306`, database, user and password `eletrontech`. The tests use a second
+  database, `eletrontech_testing`, which MySQL creates when its volume is new; a volume made before
+  E4 does not have it: `docker compose down -v` once, then `make up`.
+- Accounts: sign up at <http://localhost:8000/register>; the confirmation link arrives in Mailpit.
 
 `docker compose up` alone also works on a fresh clone: the image's entrypoint
 (`docker/php/entrypoint.sh`) installs the Composer dependencies, copies `.env.example` to `.env` and

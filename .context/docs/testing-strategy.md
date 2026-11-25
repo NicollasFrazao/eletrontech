@@ -25,9 +25,11 @@ container. A feature test proves the wiring (route → handler → response), no
 
 ## Database
 
-Feature tests run on SQLite in memory (`phpunit.xml`), with `RefreshDatabase` where a test writes.
-Anything that depends on MySQL behaviour (JSON columns, collations, locking) gets a test that runs
-against MySQL and is marked so; add a MySQL service to the `test` job when the first one appears.
+Feature tests run on **MySQL 8.4**, the image of `docker-compose.yml`, in a database of their own,
+`eletrontech_testing` (`phpunit.xml`), so a test run never wipes the app's data; `RefreshDatabase`
+where a test writes. MySQL creates that database when its volume is new (`docker/mysql/initdb/`); a
+volume from before E4 needs `docker compose down -v` once. In CI the `test` job runs the same image as
+a service. Unit tests never touch the database.
 
 ## Writing tests
 
@@ -71,6 +73,18 @@ against MySQL and is marked so; add a MySQL service to the `test` job when the f
 - `tests/Feature/CalculatorsTest.php` — the catalogue as registered, the JSON endpoints (an expression
   with a decimal comma, a number in hexadecimal, units on a construction tool) and each kind of refused
   value on its field, including a value longer than 255 characters.
+- `tests/Unit/Domain/Account/` — every value object of a sign-up (valid CPFs and each way to get one
+  wrong, phones, emails, names, the 72-byte password limit) and the account's rules (deactivation,
+  reactivation and expiry at the deadline). `tests/Unit/Application/Account/` — every use case on the
+  in-memory adapters of `tests/Support/Account/` (`AccountKit` wires them), including the closure of
+  an expired account by a sign-in or by a sign-up with its email.
+- `tests/Feature/Accounts/` — every account flow over HTTP on MySQL: sign-up (each refused field,
+  a taken email or CPF), sign-in (same answer for a wrong password and an unknown email, the limit
+  of five attempts, remember-me, reactivation and closure), email confirmation (signed link, forged
+  link), password recovery, the profile (details, password with remember-token rotation,
+  preferences, deactivation, a session whose account was closed) and the pictures (sizes, formats
+  refused, the replaced file deleted). `tests/Support/Account/SignedUp.php` makes accounts through the
+  real use cases.
 - `tests/Support/Results.php` reads a calculator's result by name: `exact()` (the fraction),
   `shown()` (12 significant digits), `unit()`.
 
