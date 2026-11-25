@@ -49,6 +49,8 @@ services:
             - "${FORWARD_DB_PORT:-3306}:3306"
         volumes:
             - mysql-data:/var/lib/mysql
+            # Creates eletrontech_testing for the test suite when the volume is new.
+            - ./docker/mysql/initdb:/docker-entrypoint-initdb.d:ro
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-ueletrontech", "-peletrontech"]
             interval: 5s

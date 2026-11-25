@@ -1,10 +1,13 @@
 # PHP 8.4 with the extensions the application and its quality gate need: pdo_mysql for MySQL,
-# intl/bcmath for formatting and decimal maths, pcntl for the queue worker, pcov for coverage.
+# intl/bcmath for formatting and decimal maths, pcntl for the queue worker, pcov for coverage, and
+# gd (with JPEG and WebP) to re-encode and scale profile pictures.
 FROM php:8.4-cli
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git unzip libzip-dev libicu-dev \
-    && docker-php-ext-install pdo_mysql zip intl bcmath pcntl \
+        libjpeg62-turbo-dev libpng-dev libwebp-dev \
+    && docker-php-ext-configure gd --with-jpeg --with-webp \
+    && docker-php-ext-install pdo_mysql zip intl bcmath pcntl gd \
     && pecl install pcov \
     && docker-php-ext-enable pcov \
     && rm -rf /var/lib/apt/lists/*

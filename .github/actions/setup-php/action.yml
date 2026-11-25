@@ -10,7 +10,7 @@ runs:
     - uses: shivammathur/setup-php@v2
       with:
         php-version: '8.4'
-        extensions: pdo_mysql, pdo_sqlite, intl, bcmath, zip
+        extensions: pdo_mysql, intl, bcmath, zip, gd
         coverage: ${{ inputs.coverage }}
         tools: composer:v2
     - id: composer-cache
