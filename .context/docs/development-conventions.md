@@ -22,6 +22,18 @@ anything prompting it, written as commands.
 make gate
 ```
 
+**Without Docker** (a coding agent's sandbox, or a machine without it), run the same gate with the
+host's PHP, since `PHP` is the Makefile's command prefix:
+
+```bash
+make gate PHP=
+```
+
+The host then needs PHP 8.4 or newer with the `pcov`, `gd`, `pdo_mysql`, `intl`, `mbstring`, `xml` and
+`zip` extensions, Composer and Node.js, and a MySQL 8.4 with an `eletrontech_testing` database for
+`composer test:coverage`, reached with `DB_HOST`/`DB_PORT` or `DB_SOCKET`, plus `DB_USERNAME` and
+`DB_PASSWORD` in the environment.
+
 It is exactly the CI, one job per check, every one of them a required check on `master`:
 
 | CI job | Command | Catches |
