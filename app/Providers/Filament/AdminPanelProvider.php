@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Infrastructure\Filament\Accounts\AccountResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -28,7 +29,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 final class AdminPanelProvider extends PanelProvider
 {
     /**
-     * The panel's identity, path, pages and the middleware every one of its requests goes through.
+     * The panel's identity, path, pages, resources and the middleware every one of its requests goes through.
      */
     public function panel(Panel $panel): Panel
     {
@@ -42,6 +43,9 @@ final class AdminPanelProvider extends PanelProvider
             ])
             ->pages([
                 Dashboard::class,
+            ])
+            ->resources([
+                AccountResource::class,
             ])
             ->middleware([
                 EncryptCookies::class,

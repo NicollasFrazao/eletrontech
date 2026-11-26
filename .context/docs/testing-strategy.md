@@ -113,6 +113,16 @@ a service. Unit tests never touch the database.
   random keys, downloads as attachments with `nosniff`, every refused type, a path sent as a file name,
   every route on another person's file, folder or event answering 404, nested folders zipped and
   deleted with their contents, the quota, and the PDF and TXT exports.
+- `tests/Unit/Application/Administration/` — the panel's access rule and the administrator's actions
+  on an account (deactivate without the password, keep the deadline of one deactivated already,
+  reactivate, close with its pictures deleted, refuse one's own account, a closed or unknown account
+  not found), on the in-memory adapters.
+- `tests/Feature/Administration/` — `/admin` over HTTP (an administrator, a member, an unconfirmed
+  account, a guest, a closed account) and the account pages over Livewire on MySQL: a member refused,
+  closed accounts not listed, the search by name, email, CPF with or without punctuation and id, the
+  edit through `UpdateProfile` (CPF and email fixed, a refused phone on its field), deactivate and
+  reactivate, delete as closure, from the list and from the edit page, and no deactivate or delete on
+  one's own row.
 - `tests/Support/Results.php` reads a calculator's result by name: `exact()` (the fraction),
   `shown()` (12 significant digits), `unit()`.
 
