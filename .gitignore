@@ -35,3 +35,7 @@ Thumbs.db
 .context/runtime/
 .context/**/archive/
 
+# Filament's assets, published by `php artisan filament:upgrade` after every composer install
+/public/css/filament
+/public/fonts/filament
+/public/js/filament

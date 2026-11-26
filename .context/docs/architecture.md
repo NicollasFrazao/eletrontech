@@ -182,6 +182,18 @@ decided in [ADR 0007](/docs/adr/0007-events-and-files.md):
 - Http: `Controllers/Agenda/EventController`, `Controllers/Files/FolderController` and
   `FileController`. Every download goes out through `Attachment`.
 
+## Admin panel
+
+E8 (#11) starts with the Filament panel at `/admin`, decided in
+[ADR 0008](/docs/adr/0008-admin-panel-and-roles.md):
+
+- `App\Domain\Account\Role` (`Member`, `Administrator`), stored in `users.role` and read with
+  `AccountRepository::roleOf()`; `Role::mayAdminister()` allows a confirmed administrator only.
+- `App\Application\Administration\AuthoriseAdministration` is the one check; the `User` model
+  implements Filament's `FilamentUser`, and `canAccessPanel()` calls it, so anyone else gets 403.
+- `App\Providers\Filament\AdminPanelProvider` configures the panel (an empty dashboard for now)
+  with no sign-in page of its own: a guest is sent to the application's `/login`.
+
 ## Errors
 
 Domain and Application code throws its own exception classes, one per failure the caller can act
@@ -200,6 +212,6 @@ the same contract, so every 2015 calculation tool, web or mobile, is in the cata
 spirit level reads a sensor and is not a calculation; see [tech-debt.md](tech-debt.md)). E4 (#7) added
 the accounts (see "Accounts" above), the first repository and the first pages behind sign-in. E5 (#8)
 added the packages, the licences and the shop (see "Packages and licences" above): every tool is now
-behind the `use-tool` gate. The rest
+behind the `use-tool` gate. E8 (#11) started with the admin panel (see "Admin panel" above). The rest
 is the context-base tooling in `app/Console/` (`context:export`, `context:check`) and the framework
 defaults.

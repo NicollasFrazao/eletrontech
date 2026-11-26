@@ -33,6 +33,13 @@ interface AccountRepository
     public function findByCpf(Cpf $cpf): ?Account;
 
     /**
+     * The role of the open account with that id; a new account is a member.
+     *
+     * @throws AccountNotFound When there is none, or it was closed.
+     */
+    public function roleOf(AccountId $id): Role;
+
+    /**
      * Writes the account's current state.
      */
     public function save(Account $account): void;
