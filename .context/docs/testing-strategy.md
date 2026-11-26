@@ -96,6 +96,15 @@ a service. Unit tests never touch the database.
   unconfirmed accounts sent away) and the shop (the packages, a purchase with the password, an
   extension, a custom package, each refused purchase on its field, someone else's custom package and
   a forged buyer id). The tool tests sign in with `tests/Support/Licensing/Licensed.php`.
+- `tests/Unit/Domain/Files/`, `tests/Unit/Domain/Agenda/` — every name that could be read as a path,
+  every refused type (including a script named `.pdf` and a page named `.txt`), the limits, the event's
+  fields. `tests/Unit/Application/Files/` and `Agenda/` — the use cases on the in-memory adapters of
+  `tests/Support/Files/` and `Agenda/`: another person's file or folder is not found, a refused file
+  leaves no content behind, a zip holds the tree, an export lands in "Events".
+- `tests/Feature/Files/`, `tests/Feature/Agenda/` — over HTTP on MySQL with a fake disk: uploads under
+  random keys, downloads as attachments with `nosniff`, every refused type, a path sent as a file name,
+  every route on another person's file, folder or event answering 404, nested folders zipped and
+  deleted with their contents, the quota, and the PDF and TXT exports.
 - `tests/Support/Results.php` reads a calculator's result by name: `exact()` (the fraction),
   `shown()` (12 significant digits), `unit()`.
 

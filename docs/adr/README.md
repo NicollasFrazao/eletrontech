@@ -11,3 +11,4 @@ decided, what else was considered, and what it costs. A superseded record stays,
 | [0004](0004-arithmetic-expressions-without-eval.md) | Arithmetic expressions evaluated exactly by a recursive-descent parser of our own, never `eval`; a text input kind for the calculator contract | Accepted |
 | [0005](0005-accounts.md) | Accounts in the domain (CPF, phone, deactivation for 30 days, closure that erases), Laravel's guard and password broker at the edge | Accepted |
 | [0006](0006-packages-and-licences.md) | Packages and licences in the domain (initial seven days, extension of the same running package), one `use-tool` gate for every tool, reference data in migrations | Accepted |
+| [0007](0007-events-and-files.md) | Events and files owned by their person (another person's is not found), contents under random keys, an allow-list checked on the content, downloads as attachments, PDF with Dompdf | Accepted |
