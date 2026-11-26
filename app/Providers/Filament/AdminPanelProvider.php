@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Infrastructure\Filament\Accounts\AccountResource;
+use App\Infrastructure\Filament\Packages\PackageResource;
+use App\Infrastructure\Filament\Tools\ToolResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -46,6 +48,8 @@ final class AdminPanelProvider extends PanelProvider
             ])
             ->resources([
                 AccountResource::class,
+                PackageResource::class,
+                ToolResource::class,
             ])
             ->middleware([
                 EncryptCookies::class,

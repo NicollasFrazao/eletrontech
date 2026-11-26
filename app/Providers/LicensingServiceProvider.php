@@ -7,6 +7,9 @@ namespace App\Providers;
 use App\Application\Account\ActivityRecorder;
 use App\Application\Account\RegisterAccount;
 use App\Application\Account\SignUp;
+use App\Application\Administration\ChangePackage;
+use App\Application\Administration\CreatePackage;
+use App\Application\Administration\RenameTool;
 use App\Application\Licensing\AuthoriseToolUse;
 use App\Application\Licensing\BuyPackage;
 use App\Application\Licensing\GrantInitialLicence;
@@ -47,7 +50,7 @@ final class LicensingServiceProvider extends ServiceProvider
     public const string USE_TOOL = 'use-tool';
 
     /**
-     * Binds the storage of tools, packages, licences and uses, and the use cases.
+     * Binds the storage of tools, packages, licences and uses, and the use cases, the admin panel's included.
      */
     public function register(): void
     {
@@ -93,6 +96,15 @@ final class LicensingServiceProvider extends ServiceProvider
         ));
         $this->app->bind(ShowShop::class, static fn (Application $app): ShowShop => new ShowShop(
             $app->make(PackageRepository::class),
+            $app->make(ToolRepository::class),
+        ));
+        $this->app->bind(CreatePackage::class, static fn (Application $app): CreatePackage => new CreatePackage(
+            $app->make(PackageRepository::class),
+        ));
+        $this->app->bind(ChangePackage::class, static fn (Application $app): ChangePackage => new ChangePackage(
+            $app->make(PackageRepository::class),
+        ));
+        $this->app->bind(RenameTool::class, static fn (Application $app): RenameTool => new RenameTool(
             $app->make(ToolRepository::class),
         ));
     }

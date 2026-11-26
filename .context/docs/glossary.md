@@ -170,6 +170,8 @@ The classes of `app/Domain/Quantity/`. Each stores its value in the coherent uni
 | Licence | Licença (`usuario_pacote`) | A user's right to a package between a start and an end date (`dt_inicio`, `dt_termino`, `qt_dias`); one per user. Buying the same package while it runs extends it; anything else replaces it |
 | Everyday tools | — | The basic calculator, the unit converter and the rule of three, which every package carries (`Package::ESSENTIALS`) |
 | Days of use | Dias de uso (`diasUso`) | What a purchase adds: 7 to 365 (`UsageDays`) |
+| Price | Preço | What a ready-made package costs for its days of use, 0.00 to 99,999.99 reais (`Price`); set in the admin panel, not charged yet |
+| Package terms | — | A ready-made package's price and its days of use (`PackageTerms`); the free package has none |
 | Initial licence | Licença inicial | Seven days with a free package, granted on registration |
 | Shop | Eletron Tech Shop (`ETS/`) | The package catalogue and the "purchase" screen |
 | Favourites | Favoritos (`Inicio.php`) | The user's favourite tools on the home section |

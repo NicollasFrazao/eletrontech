@@ -16,7 +16,7 @@ points here or to the issue.
 | Item | Why it is still open | Closes in |
 | --- | --- | --- |
 | `DatabaseSeeder` seeds nothing | The tools and packages are reference data, inserted by a migration (ADR 0006); there is no demo data yet | when demo data is needed |
-| Packages and tools have no price | The admin panel manages tools, packages and prices; payments are a future issue | #11, #20 |
+| The shop does not show a package's price and days, and nothing is charged | The admin panel sets them (ADR 0010); showing and charging them is payment's work | #20 |
 | The Draw package and the floor-plan editor tool are not in the catalogue | A package whose only tool does not exist yet would sell nothing | #9 |
 | The home page is a placeholder without Vite assets | The interface is designed in E9 | #12 |
 | No mutation testing | The calculators exist (E2) and are what it would protect; adding Infection to CI costs a job of several minutes, so it waits for a decision | to be decided (raised in the E2 pull request) |

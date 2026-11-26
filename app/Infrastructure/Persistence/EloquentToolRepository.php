@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence;
 
+use App\Domain\Licensing\CatalogueName;
 use App\Domain\Licensing\Tool;
 use App\Domain\Licensing\ToolId;
+use App\Domain\Licensing\ToolNameTaken;
 use App\Domain\Licensing\ToolRepository;
 use App\Domain\Licensing\UnknownTool;
 use App\Infrastructure\Persistence\Eloquent\ToolRecord;
@@ -54,6 +56,23 @@ final readonly class EloquentToolRepository implements ToolRepository
     public function exists(ToolId $id): bool
     {
         return ToolRecord::query()->whereKey($id->value)->exists();
+    }
+
+    /**
+     * Writes the new name on the tool's row.
+     *
+     * @throws UnknownTool When no row has the identifier.
+     * @throws ToolNameTaken When another row has the name.
+     */
+    public function rename(ToolId $id, CatalogueName $name): void
+    {
+        $record = ToolRecord::query()->find($id->value) ?? throw UnknownTool::withId($id->value);
+
+        if (ToolRecord::query()->where('name', $name->value)->whereKeyNot($id->value)->exists()) {
+            throw ToolNameTaken::named($name);
+        }
+
+        $record->update(['name' => $name->value]);
     }
 
     /**

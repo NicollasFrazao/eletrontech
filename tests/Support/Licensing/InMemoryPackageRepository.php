@@ -6,9 +6,11 @@ namespace Tests\Support\Licensing;
 
 use App\Domain\Account\AccountId;
 use App\Domain\Licensing\Package;
+use App\Domain\Licensing\PackageDefinition;
 use App\Domain\Licensing\PackageId;
 use App\Domain\Licensing\PackageKind;
 use App\Domain\Licensing\PackageRepository;
+use App\Domain\Licensing\PackageTerms;
 use App\Domain\Licensing\ToolId;
 use App\Domain\Licensing\ToolRepository;
 use App\Domain\Licensing\UnknownPackage;
@@ -30,6 +32,11 @@ final class InMemoryPackageRepository implements PackageRepository
      * @var array<int, int> The custom package id of each owner.
      */
     private array $customOf = [];
+
+    /**
+     * @var array<int, PackageTerms|null> The terms of each package added or changed, keyed by id.
+     */
+    public array $terms = [];
 
     public function __construct(private readonly ToolRepository $tools = new InMemoryToolRepository)
     {
@@ -61,16 +68,47 @@ final class InMemoryPackageRepository implements PackageRepository
 
     public function customFor(AccountId $owner, array $tools): Package
     {
-        foreach ($tools as $tool) {
-            if (! $this->tools->exists($tool)) {
-                throw UnknownTool::withId($tool->value);
-            }
-        }
+        $this->checkTools($tools);
 
         $id = new PackageId($this->customOf[$owner->value] ?? count($this->packages) + 1);
         $this->customOf[$owner->value] = $id->value;
 
         return $this->packages[$id->value] = new Package($id, 'Custom', PackageKind::Custom, $tools);
+    }
+
+    public function add(PackageDefinition $definition, PackageTerms $terms): PackageId
+    {
+        $this->checkTools($definition->tools);
+        $id = new PackageId(count($this->packages) + 1);
+        $this->packages[$id->value] = new Package($id, $definition->name->value, PackageKind::ReadyMade, $definition->tools);
+        $this->terms[$id->value] = $terms;
+
+        return $id;
+    }
+
+    public function change(PackageId $id, PackageDefinition $definition, ?PackageTerms $terms): void
+    {
+        $package = $this->get($id);
+
+        if ($package->kind === PackageKind::Custom) {
+            throw UnknownPackage::withId($id->value);
+        }
+
+        $this->checkTools($definition->tools);
+        $this->packages[$id->value] = new Package($id, $definition->name->value, $package->kind, $definition->tools);
+        $this->terms[$id->value] = $terms;
+    }
+
+    /**
+     * @param  list<ToolId>  $tools
+     */
+    private function checkTools(array $tools): void
+    {
+        foreach ($tools as $tool) {
+            if (! $this->tools->exists($tool)) {
+                throw UnknownTool::withId($tool->value);
+            }
+        }
     }
 
     /**

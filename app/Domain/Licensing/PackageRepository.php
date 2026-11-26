@@ -39,4 +39,20 @@ interface PackageRepository
      * @throws UnknownTool When a tool does not exist.
      */
     public function customFor(AccountId $owner, array $tools): Package;
+
+    /**
+     * Adds a ready-made package, sold on the terms given.
+     *
+     * @throws UnknownTool When a tool does not exist.
+     */
+    public function add(PackageDefinition $definition, PackageTerms $terms): PackageId;
+
+    /**
+     * Replaces the name, the tools and the terms of a package that is not someone's custom one; the free
+     * package has no terms.
+     *
+     * @throws UnknownPackage When no free or ready-made package has the id.
+     * @throws UnknownTool When a tool does not exist.
+     */
+    public function change(PackageId $id, PackageDefinition $definition, ?PackageTerms $terms): void;
 }

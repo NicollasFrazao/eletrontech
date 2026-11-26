@@ -14,3 +14,4 @@ decided, what else was considered, and what it costs. A superseded record stays,
 | [0007](0007-events-and-files.md) | Events and files owned by their person (another person's is not found), contents under random keys, an allow-list checked on the content, downloads as attachments, PDF with Dompdf | Accepted |
 | [0008](0008-admin-panel-and-roles.md) | The admin panel with Filament at `/admin`, open to a confirmed administrator only; the role is an enum column on the account's row, asked through one use case | Accepted |
 | [0009](0009-admin-user-management.md) | User management in the admin panel: the Filament resource in Infrastructure, every change through a use case, deletion as closure, no action on one's own account | Accepted |
+| [0010](0010-admin-catalogue.md) | The catalogue in the admin panel: ready-made packages with a price and days, the free one without, tools renamed but not created, every write through the licensing domain | Accepted |
