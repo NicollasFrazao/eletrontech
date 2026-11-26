@@ -71,7 +71,7 @@ it('renders a calculator of each group from its schema and shows the result line
     'electrical' => [
         'outlet-count',
         ['<select id="room_type" name="room_type" required', '<option value="kitchen"', 'Kitchen',
-            '<input id="length" name="length"', 'inputmode="decimal"', '<select name="units[length]"',
+            '<input id="length" name="length"', '<select name="units[length]"',
             '<option value="metre" selected', 'foot'],
         ['room_type' => 'kitchen', 'length' => '3', 'width' => '2,5', 'units' => ['width' => 'metre']],
         ['<dt>Outlets</dt>', '<dt>Total load</dt>', 'VA', 'Steps', '<dt>Area</dt>', '7.5 m²'],
@@ -143,6 +143,26 @@ it('shows a refused value on its field, keeping what was typed', function (): vo
             '<option value="foot" selected',
             '<p class="error">The value must be greater than zero.</p>',
         ], false);
+
+    expect(ToolUseRecord::query()->count())->toBe(0);
+});
+
+it('keeps a number field on a keyboard that can type a minus sign', function (): void {
+    $this->get('/tools/calculators/bernoulli-equation')
+        ->assertOk()
+        ->assertSee('<input id="pressure_1" name="pressure_1"', false)
+        ->assertDontSee('inputmode="decimal"', false);
+});
+
+it('shows the error on its field when a tampered request posts an array', function (): void {
+    $this->actingAs(Licensed::golden());
+
+    $this->from('/tools/calculators/lighting-power')
+        ->followingRedirects()
+        ->post('/tools/calculators/lighting-power', ['length' => ['1'], 'width' => '2', 'units' => ['width' => ['x']]])
+        ->assertOk()
+        ->assertSee('<input id="length" name="length" value=""', false)
+        ->assertSee('aria-invalid="true"', false);
 
     expect(ToolUseRecord::query()->count())->toBe(0);
 });

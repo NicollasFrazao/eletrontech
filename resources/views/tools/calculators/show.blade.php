@@ -1,6 +1,9 @@
 {{--
     One calculator (E9, #65): a form built from its input schema, posted to the calculation route, and the result
     lines. A quantity takes a number and the unit it was typed in; a choice, one of its options.
+    A number field has no inputmode: iOS's decimal keypad has no minus sign, and a quantity may be negative (a gauge
+    pressure, a height below the reference level). An old value is read only when it is a string, since a tampered
+    request may post an array.
 --}}
 <x-layouts.account :title="__('calculators.names.'.$calculator->id)">
     <p><a href="{{ route('tools.calculators') }}">{{ __('calculators.back') }}</a></p>
@@ -14,7 +17,7 @@
 
         @foreach ($calculator->inputs as $input)
             @php($label = __('calculators.fields.'.$input->name))
-            @php($typed = (string) old($input->name, $values[$input->name] ?? ''))
+            @php($typed = is_string($old = old($input->name, $values[$input->name] ?? '')) ? $old : '')
             <label for="{{ $input->name }}">
                 {{ $label }}@unless ($input->isRequired) ({{ __('calculators.optional') }})@endunless
             </label>
@@ -29,11 +32,10 @@
                 </select>
             @else
                 <input id="{{ $input->name }}" name="{{ $input->name }}" value="{{ $typed }}"
-                    @if ($input->kind !== 'text') inputmode="decimal" @endif
                     @required($input->isRequired) @error($input->name) aria-invalid="true" @enderror>
             @endif
             @if ($input->accepts->defaultUnit !== null)
-                @php($chosen = (string) old('units.'.$input->name, $units[$input->name] ?? $input->accepts->defaultUnit->id))
+                @php($chosen = is_string($old = old('units.'.$input->name, $units[$input->name] ?? null)) ? $old : $input->accepts->defaultUnit->id)
                 <select name="units[{{ $input->name }}]" aria-label="{{ __('calculators.unit', ['field' => $label]) }}">
                     @foreach ($input->accepts->units as $unit)
                         <option value="{{ $unit->id }}" @selected($chosen === $unit->id)>{{ $unit->name }} ({{ $unit->symbol }})</option>
