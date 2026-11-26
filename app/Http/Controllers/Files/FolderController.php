@@ -106,7 +106,7 @@ final readonly class FolderController
             throw new NotFoundHttpException($error->getMessage(), $error);
         }
 
-        $deleted = $path[array_key_last($path)] ?? null;
+        $deleted = $path === [] ? null : $path[array_key_last($path)];
 
         return FolderRedirect::to($deleted?->parent?->value, __('files.status.deleted'));
     }

@@ -21,6 +21,15 @@ it('shows the converter form with the units grouped by quantity', function (): v
         ->assertSee('kilowatt (kW)');
 });
 
+it('serves the converter ready for a phone-sized screen', function (): void {
+    $this->get('/tools/unit-converter')
+        ->assertOk()
+        ->assertSee('<meta name="viewport" content="width=device-width, initial-scale=1">', false)
+        ->assertSee('@media (max-width: 40rem)', false)
+        ->assertSee('min-height: 44px', false)
+        ->assertSee('overflow-wrap: anywhere', false);
+});
+
 it('converts a value and shows the result on the page', function (): void {
     $this->post('/tools/unit-converter', ['value' => '1,5', 'from' => 'kilowatt', 'to' => 'watt'])
         ->assertOk()

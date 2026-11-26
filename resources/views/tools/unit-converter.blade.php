@@ -11,7 +11,14 @@
         label { display: block; margin-top: 1rem; }
         input, select, button { font: inherit; padding: 0.4rem; margin-top: 0.25rem; }
         .error { color: #fca5a5; }
-        output { display: block; margin-top: 2rem; font-size: 1.5rem; }
+        output { display: block; margin-top: 2rem; font-size: 1.5rem; overflow-wrap: anywhere; }
+        /* Phones (E9, #61): one column, full-width controls with a 44 px touch target, no horizontal scroll. */
+        @media (max-width: 40rem) {
+            main { padding: 1.5rem 1rem; }
+            h1 { font-size: 1.5rem; }
+            input, select, button { box-sizing: border-box; display: block; width: 100%; min-height: 44px; }
+            output { font-size: 1.25rem; line-height: 1.4; }
+        }
     </style>
 </head>
 <body>
