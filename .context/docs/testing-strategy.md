@@ -50,6 +50,9 @@ a service. Unit tests never touch the database.
 
 - `tests/Feature/SmokeTest.php` — the home page and `/up` answer 200, and the home page carries its
   phone layout (viewport, the `40rem` breakpoint, 44 px touch targets).
+- `tests/Feature/PhoneLayoutTest.php` — every page of the user area and the shop (sign-up, sign-in,
+  profile and preferences, the shop, a package, the custom package, the licence, the agenda, the file
+  manager) carries the phone layout of the shared account layout, and the desktop rules stay as they were.
 - `tests/Feature/ContextCommandsTest.php` — `context:export` and `context:check` on a temporary
   directory: export, drift report, missing surface, missing index.
 - `tests/Unit/CodingStandardTest.php` — the local sniffs on the fixtures in `phpcs/tests/fixtures/`.
