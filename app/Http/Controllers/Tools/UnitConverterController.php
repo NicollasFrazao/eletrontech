@@ -4,25 +4,35 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Tools;
 
+use App\Application\Licensing\RecordToolUse;
 use App\Application\UnitConversion\ConversionResult;
 use App\Application\UnitConversion\ConvertQuantity;
 use App\Application\UnitConversion\ListConvertibleUnits;
 use App\Domain\Quantity\IncompatibleUnit;
 use App\Domain\Quantity\InvalidNumber;
 use App\Domain\Quantity\UnknownUnit;
+use App\Http\Controllers\Account\SignedInAccount;
 use App\Http\Requests\Tools\ConvertUnitRequest;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
 /**
- * The unit converter tool: the form, and the conversion as a page or as JSON.
+ * The unit converter tool: the form, and the conversion as a page or as JSON. Converting needs a licence that
+ * covers the converter (the `use-tool` gate on the route), and each conversion is recorded as a use.
  */
 final readonly class UnitConverterController
 {
+    /**
+     * The identifier of the converter among the tools.
+     */
+    public const string TOOL = 'unit-converter';
+
     public function __construct(
         private ListConvertibleUnits $units,
         private ConvertQuantity $convert,
+        private RecordToolUse $recordUse,
     ) {}
 
     /**
@@ -37,6 +47,7 @@ final readonly class UnitConverterController
      * Converts the value; answers JSON to a client that asks for it, the page with the result otherwise.
      *
      * @throws ValidationException When the value is not a number or the units cannot be converted.
+     * @throws AuthenticationException When nobody is signed in.
      */
     public function convert(ConvertUnitRequest $request): View|JsonResponse
     {
@@ -53,6 +64,8 @@ final readonly class UnitConverterController
         } catch (IncompatibleUnit) {
             throw ValidationException::withMessages(['to' => __('unit-converter.errors.incompatible_units')]);
         }
+
+        $this->recordUse->handle(SignedInAccount::id($request), self::TOOL);
 
         if ($request->expectsJson()) {
             return new JsonResponse($result);

@@ -4,9 +4,14 @@ Electrical calculators and a floor-plan editor for low-voltage residential elect
 following the Brazilian standard ABNT NBR 5410, for electricians, electrical technicians and students.
 
 **Version 2 is being rewritten** in Laravel 13 with a layered, tested architecture (plan: #2). The
-features arrive phase by phase (E1–E10). Done so far: the foundation (Laravel skeleton, Docker
-environment, quality gate, engineering standards) and E1, exact physical quantities with the unit
-converter at `/tools/unit-converter`.
+features arrive phase by phase (E1–E10). Done so far:
+
+- the foundation: Laravel skeleton, Docker environment, quality gate, engineering standards;
+- E1: exact physical quantities, with the unit converter at `/tools/unit-converter`;
+- E2 and E3: the 24 calculators of 2015, as JSON at `/tools/calculators`;
+- E4: accounts, with sign-up, sign-in, recovery and the profile;
+- E5: packages, licences and the shop at `/shop`. A new account gets the Basic package for seven
+  days, and every tool needs a licence that covers it.
 
 ## Run it
 

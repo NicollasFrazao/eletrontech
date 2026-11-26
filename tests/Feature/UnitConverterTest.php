@@ -2,6 +2,16 @@
 
 declare(strict_types=1);
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\Licensing\Licensed;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function (): void {
+    // Using a tool needs a licence that covers it (E5); Golden covers every tool.
+    $this->actingAs(Licensed::golden());
+});
+
 it('shows the converter form with the units grouped by quantity', function (): void {
     $this->get('/tools/unit-converter')
         ->assertOk()
