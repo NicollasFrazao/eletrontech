@@ -53,6 +53,12 @@ a service. Unit tests never touch the database.
 - `tests/Feature/PhoneLayoutTest.php` — every page of the user area and the shop (sign-up, sign-in,
   profile and preferences, the shop, a package, the custom package, the licence, the agenda, the file
   manager) carries the phone layout of the shared account layout, and the desktop rules stay as they were.
+- `tests/Feature/AccessibilityTest.php` — the accessibility pass (E9, #64): every page of the user area,
+  the tools and the shop, parsed as HTML5 with an error on every field, has a label for each field, each
+  error tied to its field by `aria-describedby` (or an alert of the whole form), unique ids, and no action
+  out of the keyboard's reach (no link without `href`, no `onclick`, no positive `tabindex`); a refused
+  field over HTTP is marked `aria-invalid`; and each page shell's colours meet WCAG AA (4.5:1 for text,
+  3:1 for the focus ring), computed in the test.
 - `tests/Feature/ContextCommandsTest.php` — `context:export` and `context:check` on a temporary
   directory: export, drift report, missing surface, missing index.
 - `tests/Unit/CodingStandardTest.php` — the local sniffs on the fixtures in `phpcs/tests/fixtures/`.

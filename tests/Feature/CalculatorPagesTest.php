@@ -141,7 +141,7 @@ it('shows a refused value on its field, keeping what was typed', function (): vo
             '<input id="width" name="width" value="-2"',
             'aria-invalid="true"',
             '<option value="foot" selected',
-            '<p class="error">The value must be greater than zero.</p>',
+            '<p class="error" id="width-error">The value must be greater than zero.</p>',
         ], false);
 
     expect(ToolUseRecord::query()->count())->toBe(0);

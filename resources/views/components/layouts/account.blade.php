@@ -8,7 +8,14 @@
         body { margin: 0; font-family: system-ui, sans-serif; background: #f8fafc; color: #0f172a; }
         body.night { background: #0f172a; color: #e2e8f0; }
         main { max-width: 40rem; margin: 0 auto; padding: 3rem 1rem; }
-        a { color: #0284c7; }
+        /*
+         * Accessibility (E9, #64): text and links meet WCAG AA (4.5:1) in both modes, and every link, button and
+         * field shows a 3 px focus ring when reached with the keyboard (3:1 against the background).
+         */
+        a { color: #0369a1; }
+        body.night a { color: #38bdf8; }
+        :focus-visible { outline: 3px solid #0369a1; outline-offset: 2px; }
+        body.night :focus-visible { outline-color: #38bdf8; }
         label { display: block; margin-top: .75rem; }
         input, select { display: block; width: 100%; max-width: 24rem; padding: .4rem; margin-top: .25rem; }
         input[type=checkbox] { display: inline; width: auto; }
@@ -16,6 +23,7 @@
         section { margin-top: 2rem; }
         .status { padding: .5rem; background: #dcfce7; color: #14532d; }
         .error { color: #b91c1c; font-size: .9rem; }
+        body.night .error { color: #fca5a5; }
         h1, h2, p, li, dd, nav { overflow-wrap: anywhere; }
         /*
          * Phones (E9, #62): one column, full-width controls and links with a 44 px touch target, no horizontal

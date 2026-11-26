@@ -14,12 +14,13 @@
             <form method="POST" action="{{ route('profile.images.store', $kind) }}" enctype="multipart/form-data">
                 @csrf
                 <label for="image-{{ $kind->value }}">{{ __('accounts.fields.'.$kind->value) }}</label>
-                <input id="image-{{ $kind->value }}" name="image" type="file" accept="image/jpeg,image/png,image/webp" required>
+                <input id="image-{{ $kind->value }}" name="image" type="file" accept="image/jpeg,image/png,image/webp" required
+                       @error('image') aria-describedby="image-error" @enderror>
                 <button type="submit">{{ __('accounts.actions.upload') }}</button>
             </form>
         @endforeach
         @error('image')
-            <p class="error">{{ $message }}</p>
+            <p class="error" id="image-error">{{ $message }}</p>
         @enderror
     </section>
 
