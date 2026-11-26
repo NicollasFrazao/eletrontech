@@ -1,7 +1,7 @@
 # 0010. The catalogue in the admin panel: packages with a price and days, tools renamed, writes through the licensing domain
 
 - Status: Accepted
-- Date: 2026-11-28
+- Date: 2026-11-26
 - Issues: #58 (E8, part of #11)
 
 ## Context
