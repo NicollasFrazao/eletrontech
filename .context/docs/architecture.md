@@ -146,6 +146,24 @@ the calculator and rounds each number to 12 significant digits; `ListCalculators
   guard, password broker and signed links stay at this edge; the controllers take the account id
   from the session only. `AccountServiceProvider` binds the ports.
 
+## Packages and licences
+
+`app/Domain/Licensing/` holds the packages and licences of E5 (#8), decided in
+[ADR 0006](/docs/adr/0006-packages-and-licences.md):
+
+- `Package` (free, ready-made or custom, with its `ToolId`s), `Licence` (a holder, a package, a
+  period: `initial()`, `renewedWith()`, `remainingDaysAt()`, and `allows()`, the one access rule),
+  `UsageDays` (7 to 365), `Tool`. Ports: `PackageRepository`, `ToolRepository`, `LicenceRepository`,
+  `ToolUseLog`.
+- `app/Application/Licensing/`: `GrantInitialLicence`, `BuyPackage` (with `PasswordConfirmation`),
+  `AuthoriseToolUse`, `RecordToolUse`, `ShowLicence`, `ShowShop`. `Application/Account/SignUp`
+  registers the account and grants its initial licence.
+- `app/Infrastructure/Persistence/`: `EloquentPackageRepository`, `EloquentToolRepository`,
+  `EloquentLicenceRepository`, `EloquentToolUseLog` (`tools`, `packages`, `package_tool`, `licences`,
+  `tool_uses`; the tools and packages are inserted by a migration).
+- `app/Http/Controllers/Shop/`: the shop, the purchase and the licence page. The tool routes require
+  `can:use-tool,…`; `LicensingServiceProvider` binds the ports and defines the gate.
+
 ## Events and files
 
 `app/Domain/Agenda/` and `app/Domain/Files/` hold the events and the file manager of E7 (#10),
@@ -180,6 +198,8 @@ the twelve electrical calculators (`app/Domain/Calculator/`), the use case that 
 (`app/Application/Calculation/`) and their JSON endpoint. E3 (#6) added twelve general calculators on
 the same contract, so every 2015 calculation tool, web or mobile, is in the catalogue (the mobile
 spirit level reads a sensor and is not a calculation; see [tech-debt.md](tech-debt.md)). E4 (#7) added
-the accounts (see "Accounts" above), the first repository and the first pages behind sign-in. The rest
+the accounts (see "Accounts" above), the first repository and the first pages behind sign-in. E5 (#8)
+added the packages, the licences and the shop (see "Packages and licences" above): every tool is now
+behind the `use-tool` gate. The rest
 is the context-base tooling in `app/Console/` (`context:export`, `context:check`) and the framework
 defaults.

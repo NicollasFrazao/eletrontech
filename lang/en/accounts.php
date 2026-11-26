@@ -106,5 +106,6 @@ return [
         'deactivated' => 'Account deactivated',
         'reactivated' => 'Account reactivated',
         'closed' => 'Account closed',
+        'package_bought' => 'Package bought',
     ],
 ];

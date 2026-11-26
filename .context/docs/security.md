@@ -41,6 +41,9 @@ The 2015 code (tag `v1`) is kept for reference only. Never copy these patterns:
   either way; the recovery form answers the same whether or not the email has an account.
 - Closing an account erases its CPF, email, phone, password and pictures; the name and the activity
   log stay ([ADR 0005](/docs/adr/0005-accounts.md)).
+- Every tool route checks the `use-tool` gate: the person's licence runs and covers the tool. The
+  pages that list tools are not the check ([ADR 0006](/docs/adr/0006-packages-and-licences.md)).
+- A purchase is confirmed by checking the password's hash on the server; the buyer is the session's.
 - Uploads ([ADR 0007](/docs/adr/0007-events-and-files.md)):
   - an allow-list of types, checked on both the extension and the media type libmagic reads from the
     bytes;

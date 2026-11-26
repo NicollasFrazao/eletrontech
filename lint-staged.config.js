@@ -5,9 +5,12 @@ const CONTEXT_FILES = '{.context/docs/README.md,AGENTS.md,.claude/CLAUDE.md,.git
 // The sniff fixtures break the rules on purpose; tests/Unit/CodingStandardTest.php checks them.
 const FIXTURES = '/phpcs/tests/fixtures/';
 
-/** Pint and PHP_CodeSniffer on the staged PHP files, except the sniff fixtures. */
+// Blade templates end in .php but hold no PHP code for the sniffs; PHP_CodeSniffer warns on them.
+const BLADE = '.blade.php';
+
+/** Pint and PHP_CodeSniffer on the staged PHP files, except the sniff fixtures and Blade templates. */
 function php(files) {
-    const checked = files.filter((file) => !file.includes(FIXTURES)).join(' ');
+    const checked = files.filter((file) => !file.includes(FIXTURES) && !file.endsWith(BLADE)).join(' ');
 
     if (checked === '') {
         return [];

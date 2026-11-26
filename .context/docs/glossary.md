@@ -165,9 +165,11 @@ The classes of `app/Domain/Quantity/`. Each stores its value in the coherent uni
 | Account deactivation | Desativação da conta (`ic_ativado`, `dt_reativar`) | The user disables the account until a reactivation date |
 | Profile | Perfil | Personal details, profile photo (`im_usuario`), cover photo (`im_capa`), night mode |
 | Night mode | Modo noturno | Dark theme preference |
-| Package | Pacote (`tb_pacote`) | A set of tools with a cost; ready-made or custom |
+| Package | Pacote (`tb_pacote`) | A set of tools: the free one a new account gets, a ready-made one from the shop, or a custom one (`PackageKind`) |
 | Custom package | Pacote customizado (`ic_custom`) | A package whose tools the user picked |
-| Licence | Licença (`usuario_pacote`) | A user's right to a package between a start and an end date (`dt_inicio`, `dt_termino`, `qt_dias`) |
+| Licence | Licença (`usuario_pacote`) | A user's right to a package between a start and an end date (`dt_inicio`, `dt_termino`, `qt_dias`); one per user. Buying the same package while it runs extends it; anything else replaces it |
+| Everyday tools | — | The basic calculator, the unit converter and the rule of three, which every package carries (`Package::ESSENTIALS`) |
+| Days of use | Dias de uso (`diasUso`) | What a purchase adds: 7 to 365 (`UsageDays`) |
 | Initial licence | Licença inicial | Seven days with a free package, granted on registration |
 | Shop | Eletron Tech Shop (`ETS/`) | The package catalogue and the "purchase" screen |
 | Favourites | Favoritos (`Inicio.php`) | The user's favourite tools on the home section |

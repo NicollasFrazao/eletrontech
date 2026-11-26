@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 use App\Domain\Calculator\Calculator;
 use App\Domain\Calculator\CalculatorCatalog;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Support\Licensing\Licensed;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function (): void {
+    // Using a tool needs a licence that covers it (E5); Golden covers every tool.
+    $this->actingAs(Licensed::golden());
+});
 
 it('registers every calculator of the 2015 version, electrical and general', function (): void {
     $ids = array_map(static fn (Calculator $calculator): string => $calculator->id(), app(CalculatorCatalog::class)->all());

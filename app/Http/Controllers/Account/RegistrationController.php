@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Account;
 
-use App\Application\Account\RegisterAccount;
+use App\Application\Account\SignUp;
 use App\Domain\Account\AlreadyRegistered;
 use App\Domain\Account\InvalidAccountData;
 use App\Domain\Account\PhoneType;
@@ -20,7 +20,7 @@ use Illuminate\Validation\ValidationException;
 final readonly class RegistrationController
 {
     public function __construct(
-        private RegisterAccount $register,
+        private SignUp $register,
     ) {}
 
     /**

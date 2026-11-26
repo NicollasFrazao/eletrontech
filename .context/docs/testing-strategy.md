@@ -85,6 +85,17 @@ a service. Unit tests never touch the database.
   preferences, deactivation, a session whose account was closed) and the pictures (sizes, formats
   refused, the replaced file deleted). `tests/Support/Account/SignedUp.php` makes accounts through the
   real use cases.
+- `tests/Unit/Domain/Licensing/` — the licence's rules: the initial seven days, extension of the same
+  running package, replacement by another package or after the end, a custom package with other
+  tools, the days left (a part of a day counts), the access rule at the edges of the period, the
+  7-to-365 days. `tests/Unit/Application/Licensing/` — the use cases on the in-memory adapters of
+  `tests/Support/Licensing/` (`LicensingKit` wires them): every refused purchase leaves the licence
+  as it was.
+- `tests/Feature/Licensing/` — the `use-tool` gate over HTTP (the free package's tools open and are
+  recorded, other tools and an ended licence refused, an unknown tool not found, guests and
+  unconfirmed accounts sent away) and the shop (the packages, a purchase with the password, an
+  extension, a custom package, each refused purchase on its field, someone else's custom package and
+  a forged buyer id). The tool tests sign in with `tests/Support/Licensing/Licensed.php`.
 - `tests/Unit/Domain/Files/`, `tests/Unit/Domain/Agenda/` — every name that could be read as a path,
   every refused type (including a script named `.pdf` and a page named `.txt`), the limits, the event's
   fields. `tests/Unit/Application/Files/` and `Agenda/` — the use cases on the in-memory adapters of
