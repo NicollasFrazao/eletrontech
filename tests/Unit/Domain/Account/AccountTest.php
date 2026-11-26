@@ -86,6 +86,20 @@ it('expires a deactivated account signed in to after its deadline, and keeps it 
         ->and(anAccount()->hasExpired($after))->toBeFalse();
 });
 
+it('is active until deactivated, and active again when a sign-in reactivates it', function (): void {
+    $account = anAccount();
+
+    expect($account->isActive())->toBeTrue();
+
+    $account->deactivate(new DateTimeImmutable('2026-11-01 12:00'));
+
+    expect($account->isActive())->toBeFalse();
+
+    $account->signIn(new DateTimeImmutable('2026-11-02 12:00'));
+
+    expect($account->isActive())->toBeTrue();
+});
+
 it('names the picture replaced as an activity of its own kind', function (): void {
     expect(ActivityType::imageReplaced(ImageKind::Photo))->toBe(ActivityType::PhotoReplaced)
         ->and(ActivityType::imageReplaced(ImageKind::Cover))->toBe(ActivityType::CoverReplaced)

@@ -93,11 +93,19 @@ final class Account
     }
 
     /**
+     * Whether the account is in use, that is not deactivated.
+     */
+    public function isActive(): bool
+    {
+        return ! $this->access->reactivationDeadline instanceof DateTimeImmutable;
+    }
+
+    /**
      * Applies a sign-in: reactivates a deactivated account before its deadline, and says it expired after.
      */
     public function signIn(DateTimeImmutable $now): SignInEffect
     {
-        if (! $this->access->reactivationDeadline instanceof DateTimeImmutable) {
+        if ($this->isActive()) {
             return SignInEffect::None;
         }
 
