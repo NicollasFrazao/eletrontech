@@ -22,6 +22,7 @@ use App\Domain\Account\PhoneNumber;
 use App\Domain\Account\PhoneType;
 use App\Domain\Account\Preferences;
 use App\Domain\Account\Profile;
+use App\Domain\Account\Role;
 use App\Infrastructure\Persistence\Eloquent\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Date;
@@ -81,6 +82,18 @@ final readonly class EloquentAccountRepository implements AccountRepository
         $user = $this->open()->where('cpf', $cpf->digits)->first();
 
         return $user === null ? null : $this->account($user);
+    }
+
+    /**
+     * The role in the row's `role` column, which only the database changes for now.
+     *
+     * @throws AccountNotFound When there is none, or it was closed.
+     */
+    public function roleOf(AccountId $id): Role
+    {
+        $user = $this->open()->find($id->value) ?? throw AccountNotFound::withId($id);
+
+        return Role::from($user->role);
     }
 
     /**

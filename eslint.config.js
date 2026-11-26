@@ -10,7 +10,7 @@ const MAX_PARAMETERS = 4;
 
 export default [
     {
-        ignores: ['bootstrap/cache/', 'coverage/', 'node_modules/', 'public/build/', 'storage/', 'vendor/'],
+        ignores: ['bootstrap/cache/', 'coverage/', 'node_modules/', 'public/build/', 'public/js/filament/', 'storage/', 'vendor/'],
     },
     js.configs.recommended,
     sonarjs.configs.recommended,

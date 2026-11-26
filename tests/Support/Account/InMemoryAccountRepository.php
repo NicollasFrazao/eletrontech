@@ -13,6 +13,7 @@ use App\Domain\Account\EmailAddress;
 use App\Domain\Account\NewAccount;
 use App\Domain\Account\Preferences;
 use App\Domain\Account\Profile;
+use App\Domain\Account\Role;
 
 /**
  * Accounts in an array, for the use-case tests; closed ids are remembered to prove they are not found.
@@ -24,6 +25,9 @@ final class InMemoryAccountRepository implements AccountRepository
 
     /** @var list<int> */
     public array $closed = [];
+
+    /** @var array<int, Role> */
+    private array $roles = [];
 
     public function register(NewAccount $account): AccountId
     {
@@ -65,6 +69,18 @@ final class InMemoryAccountRepository implements AccountRepository
         }
 
         return null;
+    }
+
+    public function roleOf(AccountId $id): Role
+    {
+        return isset($this->accounts[$id->value])
+            ? $this->roles[$id->value] ?? Role::Member
+            : throw AccountNotFound::withId($id);
+    }
+
+    public function grant(AccountId $id, Role $role): void
+    {
+        $this->roles[$id->value] = $role;
     }
 
     public function save(Account $account): void

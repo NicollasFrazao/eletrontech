@@ -185,7 +185,9 @@ The classes of `app/Domain/Quantity/`. Each stores its value in the coherent uni
 | Activity | Atividade (`tb_atividade`) | A logged user action, shown in the admin activity log |
 | Visit | Visita (`tb_visita`) | A page access by a user, for statistics |
 | Access | Acesso (`tb_acesso`) | A login attempt with IP, browser and error count |
-| Admin panel | Painel administrativo (`et-admin/`) | User management, logs, statistics, reports |
+| Admin panel | Painel administrativo (`et-admin/`) | User management, logs, statistics, reports; Filament at `/admin` |
+| Role | — (`ic_admin`) | What an account may do beyond the tools: `Member` or `Administrator` (`Role`, `users.role`) |
+| Administrator | Administrador (`ic_admin = 1`) | An account whose role opens the admin panel, once its email is confirmed |
 
 ## Abbreviations allowed in names
 
