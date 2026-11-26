@@ -48,7 +48,8 @@ a service. Unit tests never touch the database.
 
 ## Current tests
 
-- `tests/Feature/SmokeTest.php` — the home page and `/up` answer 200.
+- `tests/Feature/SmokeTest.php` — the home page and `/up` answer 200, and the home page carries its
+  phone layout (viewport, the `40rem` breakpoint, 44 px touch targets).
 - `tests/Feature/ContextCommandsTest.php` — `context:export` and `context:check` on a temporary
   directory: export, drift report, missing surface, missing index.
 - `tests/Unit/CodingStandardTest.php` — the local sniffs on the fixtures in `phpcs/tests/fixtures/`.
@@ -58,8 +59,8 @@ a service. Unit tests never touch the database.
   `FluidAndMaterialLawsTest.php` for the quantities E3 added (volume, dynamic and hydrostatic pressure,
   Ohm's second law).
 - `tests/Unit/Application/UnitConversion/` — the converter use cases.
-- `tests/Feature/UnitConverterTest.php` — the converter page and its JSON answer, and each
-  validation error on its field.
+- `tests/Feature/UnitConverterTest.php` — the converter page, its phone layout and its JSON answer,
+  and each validation error on its field.
 - `tests/Unit/Domain/Calculator/` — the contract (`CalculatorContractTest.php` runs every calculator
   through the same checks: distinct input names, a unit for each quantity, options for each choice,
   refusal of empty inputs), `Inputs`, `RealNumbers`, and `Electrical/`, one file per calculator with
