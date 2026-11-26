@@ -8,6 +8,8 @@
     <style>
         body { margin: 0; font-family: system-ui, sans-serif; background: #0f172a; color: #e2e8f0; }
         main { max-width: 40rem; margin: 0 auto; padding: 4rem 1rem; }
+        /* Accessibility (E9, #64): a 3 px focus ring for keyboard users, 8:1 against the background. */
+        :focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; }
         label { display: block; margin-top: 1rem; }
         input, select, button { font: inherit; padding: 0.4rem; margin-top: 0.25rem; }
         .error { color: #fca5a5; }
@@ -29,12 +31,14 @@
     <form method="post" action="{{ route('tools.unit-converter.convert') }}">
         @csrf
         <label for="value">{{ __('unit-converter.value') }}</label>
-        <input id="value" name="value" inputmode="decimal" required value="{{ old('value', $result?->from->value) }}">
-        @error('value') <p class="error">{{ $message }}</p> @enderror
+        <input id="value" name="value" inputmode="decimal" required value="{{ old('value', $result?->from->value) }}"
+               @error('value') aria-invalid="true" aria-describedby="value-error" @enderror>
+        @error('value') <p class="error" id="value-error">{{ $message }}</p> @enderror
 
         @foreach (['from' => $result?->from->unit->id, 'to' => $result?->to->unit->id] as $field => $selected)
             <label for="{{ $field }}">{{ __('unit-converter.'.$field) }}</label>
-            <select id="{{ $field }}" name="{{ $field }}" required>
+            <select id="{{ $field }}" name="{{ $field }}" required
+                    @error($field) aria-invalid="true" aria-describedby="{{ $field }}-error" @enderror>
                 @foreach ($groups as $group)
                     <optgroup label="{{ __('unit-converter.dimensions.'.$group->dimension) }}">
                         @foreach ($group->units as $unit)
@@ -43,7 +47,7 @@
                     </optgroup>
                 @endforeach
             </select>
-            @error($field) <p class="error">{{ $message }}</p> @enderror
+            @error($field) <p class="error" id="{{ $field }}-error">{{ $message }}</p> @enderror
         @endforeach
 
         <p><button type="submit">{{ __('unit-converter.convert') }}</button></p>

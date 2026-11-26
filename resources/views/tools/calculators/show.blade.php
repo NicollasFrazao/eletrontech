@@ -22,7 +22,7 @@
                 {{ $label }}@unless ($input->isRequired) ({{ __('calculators.optional') }})@endunless
             </label>
             @if ($input->kind === 'choice')
-                <select id="{{ $input->name }}" name="{{ $input->name }}" @required($input->isRequired) @error($input->name) aria-invalid="true" @enderror>
+                <select id="{{ $input->name }}" name="{{ $input->name }}" @required($input->isRequired) @error($input->name) aria-invalid="true" aria-describedby="{{ $input->name }}-error" @enderror>
                     @unless ($input->isRequired)
                         <option value="">{{ __('calculators.none') }}</option>
                     @endunless
@@ -32,18 +32,19 @@
                 </select>
             @else
                 <input id="{{ $input->name }}" name="{{ $input->name }}" value="{{ $typed }}"
-                    @required($input->isRequired) @error($input->name) aria-invalid="true" @enderror>
+                    @required($input->isRequired) @error($input->name) aria-invalid="true" aria-describedby="{{ $input->name }}-error" @enderror>
             @endif
             @if ($input->accepts->defaultUnit !== null)
                 @php($chosen = is_string($old = old('units.'.$input->name, $units[$input->name] ?? null)) ? $old : $input->accepts->defaultUnit->id)
-                <select name="units[{{ $input->name }}]" aria-label="{{ __('calculators.unit', ['field' => $label]) }}">
+                <select name="units[{{ $input->name }}]" aria-label="{{ __('calculators.unit', ['field' => $label]) }}"
+                    @error('units.'.$input->name) aria-invalid="true" aria-describedby="{{ $input->name }}-unit-error" @enderror>
                     @foreach ($input->accepts->units as $unit)
                         <option value="{{ $unit->id }}" @selected($chosen === $unit->id)>{{ $unit->name }} ({{ $unit->symbol }})</option>
                     @endforeach
                 </select>
             @endif
-            @error($input->name) <p class="error">{{ $message }}</p> @enderror
-            @error('units.'.$input->name) <p class="error">{{ $message }}</p> @enderror
+            @error($input->name) <p class="error" id="{{ $input->name }}-error">{{ $message }}</p> @enderror
+            @error('units.'.$input->name) <p class="error" id="{{ $input->name }}-unit-error">{{ $message }}</p> @enderror
         @endforeach
 
         <button type="submit">{{ __('calculators.calculate') }}</button>

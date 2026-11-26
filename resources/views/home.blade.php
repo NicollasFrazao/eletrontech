@@ -7,6 +7,8 @@
     <style>
         body { margin: 0; font-family: system-ui, sans-serif; background: #0f172a; color: #e2e8f0; }
         main { max-width: 40rem; margin: 0 auto; padding: 4rem 1rem; }
+        /* Accessibility (E9, #64): a 3 px focus ring for keyboard users, 8:1 against the background. */
+        :focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; }
         a { color: #38bdf8; }
         p { overflow-wrap: anywhere; }
         /* Phones (E9, #61): a single column without horizontal scroll, and links large enough to tap. */

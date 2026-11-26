@@ -13,7 +13,7 @@
     <ul>
         @foreach ($view->contents->folders as $child)
             <li>
-                📁 <a href="{{ route('files.folder', $child->id->value) }}">{{ $child->name->value }}</a>
+                <span aria-hidden="true">📁</span> <a href="{{ route('files.folder', $child->id->value) }}">{{ $child->name->value }}</a>
                 · <a href="{{ route('files.folders.download', $child->id->value) }}">{{ __('files.actions.zip') }}</a>
                 <form method="POST" action="{{ route('files.folders.destroy', $child->id->value) }}" style="display: inline">
                     @csrf
@@ -40,9 +40,9 @@
             @csrf
             <input type="hidden" name="folder" value="{{ $folder }}">
             <label for="file">{{ __('files.fields.file') }}</label>
-            <input id="file" name="file" type="file" required>
+            <input id="file" name="file" type="file" required @error('file') aria-invalid="true" aria-describedby="file-error" @enderror>
             @error('file')
-                <p class="error">{{ $message }}</p>
+                <p class="error" id="file-error">{{ $message }}</p>
             @enderror
             <button type="submit">{{ __('files.actions.upload') }}</button>
         </form>

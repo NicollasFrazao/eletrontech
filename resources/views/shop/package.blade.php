@@ -9,7 +9,7 @@
         @csrf
         <input type="hidden" name="package_id" value="{{ $package->id }}">
         @error('package_id')
-            <p class="error">{{ $message }}</p>
+            <p class="error" role="alert">{{ $message }}</p>
         @enderror
         @include('shop.purchase-form')
     </form>

@@ -49,7 +49,7 @@
             </form>
         @endforeach
         @error('export')
-            <p class="error">{{ $message }}</p>
+            <p class="error" role="alert">{{ $message }}</p>
         @enderror
     </section>
 </x-layouts.account>
