@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Infrastructure\Filament\Accounts\AccountResource;
+use App\Infrastructure\Filament\Feedback\FeedbackResource;
 use App\Infrastructure\Filament\Packages\PackageResource;
 use App\Infrastructure\Filament\Tools\ToolResource;
 use Filament\Http\Middleware\Authenticate;
@@ -50,6 +51,7 @@ final class AdminPanelProvider extends PanelProvider
                 AccountResource::class,
                 PackageResource::class,
                 ToolResource::class,
+                FeedbackResource::class,
             ])
             ->middleware([
                 EncryptCookies::class,

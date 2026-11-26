@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Providers\AccountServiceProvider;
 use App\Providers\AppServiceProvider;
+use App\Providers\FeedbackServiceProvider;
 use App\Providers\Filament\AdminPanelProvider;
 use App\Providers\FilesServiceProvider;
 use App\Providers\LicensingServiceProvider;
@@ -13,5 +14,6 @@ return [
     AccountServiceProvider::class,
     LicensingServiceProvider::class,
     FilesServiceProvider::class,
+    FeedbackServiceProvider::class,
     AdminPanelProvider::class,
 ];

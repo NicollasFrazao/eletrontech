@@ -9,6 +9,7 @@ use App\Http\Controllers\Account\ProfileImageController;
 use App\Http\Controllers\Account\RegistrationController;
 use App\Http\Controllers\Account\SessionController;
 use App\Http\Controllers\Agenda\EventController;
+use App\Http\Controllers\Feedback\FeedbackController;
 use App\Http\Controllers\Files\FileController;
 use App\Http\Controllers\Files\FolderController;
 use App\Http\Controllers\Shop\LicenceController;
@@ -106,4 +107,10 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/files/{file}', [FileController::class, 'show'])->whereNumber('file')->name('files.show');
     Route::get('/files/{file}/download', [FileController::class, 'download'])->whereNumber('file')->name('files.download');
     Route::delete('/files/{file}', [FileController::class, 'destroy'])->whereNumber('file')->name('files.destroy');
+});
+
+// Feedback (E9, #63): kept with the account and the date, and read by the administrators in the admin panel.
+Route::middleware(['auth', 'verified'])->group(function (): void {
+    Route::get('/feedback', [FeedbackController::class, 'create'])->name('feedback');
+    Route::post('/feedback', [FeedbackController::class, 'store'])->middleware('throttle:6,1')->name('feedback.store');
 });

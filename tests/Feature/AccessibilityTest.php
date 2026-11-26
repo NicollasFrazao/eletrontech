@@ -30,7 +30,7 @@ function everyFieldRefused(): ViewErrorBag
         'name', 'cpf', 'phone_number', 'phone_type', 'email', 'password', 'password_confirmation',
         'current_password', 'deactivation_password', 'image', 'title', 'starts_at', 'description', 'export',
         'days', 'purchase_password', 'package_id', 'tools', 'file', 'value', 'from', 'to', 'length', 'width',
-        'units.length', 'units.width', 'inputs',
+        'units.length', 'units.width', 'inputs', 'subject', 'message',
     ];
 
     return (new ViewErrorBag)->put('default', new MessageBag(array_fill_keys($fields, 'Refused.')));
@@ -152,6 +152,7 @@ it('labels every field, ties every error to its field and keeps every action on 
     'licence' => [fn (): string => '/licence', true],
     'agenda' => [fn (): string => '/agenda', true],
     'file manager' => [fn (): string => '/files', true],
+    'feedback' => [fn (): string => '/feedback', true],
 ]);
 
 it('ties a refused sign-up field to its message and marks it invalid', function (): void {

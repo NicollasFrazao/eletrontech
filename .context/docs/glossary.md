@@ -191,6 +191,8 @@ The classes of `app/Domain/Quantity/`. Each stores its value in the coherent uni
 | Delete an account (admin) | Excluir usuário (`Excluir.php`) | In v2, closing it: what identifies the person is erased, the name and the activity log kept (`CloseAccount`) |
 | Role | — (`ic_admin`) | What an account may do beyond the tools: `Member` or `Administrator` (`Role`, `users.role`) |
 | Administrator | Administrador (`ic_admin = 1`) | An account whose role opens the admin panel, once its email is confirmed |
+| Feedback | Feedback (`Feedback.html`, `EnviarFeedback.php`) | A message a person sends to the administrators: a subject and up to 500 characters, kept with the account and the date (`Feedback`, `feedback`) |
+| Feedback subject | Assunto da mensagem (Dúvidas, Elogios, Erros, Interface, Mau desempenho, Sugestões, Outros) | What a feedback message is about: `Question`, `Praise`, `Bug`, `Interface`, `Performance`, `Suggestion`, `Other` (`FeedbackSubject`) |
 
 ## Abbreviations allowed in names
 
