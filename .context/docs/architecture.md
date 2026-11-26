@@ -191,8 +191,16 @@ E8 (#11) starts with the Filament panel at `/admin`, decided in
   `AccountRepository::roleOf()`; `Role::mayAdminister()` allows a confirmed administrator only.
 - `App\Application\Administration\AuthoriseAdministration` is the one check; the `User` model
   implements Filament's `FilamentUser`, and `canAccessPanel()` calls it, so anyone else gets 403.
-- `App\Providers\Filament\AdminPanelProvider` configures the panel (an empty dashboard for now)
-  with no sign-in page of its own: a guest is sent to the application's `/login`.
+- `App\Providers\Filament\AdminPanelProvider` configures the panel (the dashboard and the
+  resources) with no sign-in page of its own: a guest is sent to the application's `/login`.
+- User management ([ADR 0009](/docs/adr/0009-admin-user-management.md)): the Filament resource
+  `App\Infrastructure\Filament\Accounts\AccountResource` lists and searches the open accounts (id,
+  name, email, CPF) and changes them only through use cases: `Account\UpdateProfile` for the name and
+  the phone, and `App\Application\Administration\DeactivateAccount`, `ReactivateAccount` and
+  `CloseAccount` (delete = close, as ADR 0005 closes an expired account). An administrator cannot
+  deactivate or delete their own account (`OwnAccountRefused`).
+- Filament resources live in `app/Infrastructure/Filament/`, since they are built on the Eloquent
+  models; they read rows directly and write through Application use cases.
 
 ## Errors
 
@@ -212,6 +220,6 @@ the same contract, so every 2015 calculation tool, web or mobile, is in the cata
 spirit level reads a sensor and is not a calculation; see [tech-debt.md](tech-debt.md)). E4 (#7) added
 the accounts (see "Accounts" above), the first repository and the first pages behind sign-in. E5 (#8)
 added the packages, the licences and the shop (see "Packages and licences" above): every tool is now
-behind the `use-tool` gate. E8 (#11) started with the admin panel (see "Admin panel" above). The rest
+behind the `use-tool` gate. E8 (#11) started with the admin panel and its user management (see "Admin panel" above). The rest
 is the context-base tooling in `app/Console/` (`context:export`, `context:check`) and the framework
 defaults.
