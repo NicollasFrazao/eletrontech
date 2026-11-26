@@ -77,6 +77,10 @@ a service. Unit tests never touch the database.
 - `tests/Feature/CalculatorsTest.php` — the catalogue as registered, the JSON endpoints (an expression
   with a decimal comma, a number in hexadecimal, units on a construction tool) and each kind of refused
   value on its field, including a value longer than 255 characters.
+- `tests/Feature/CalculatorPagesTest.php` — the pages (E9, #65): the list by group, one calculator of
+  each group rendered from its schema and calculated, a band colour and a rounded value in the result, a
+  tool the licence does not cover, a refused value shown on its field with what was typed, every name
+  translated, and the phone layout.
 - `tests/Unit/Domain/Account/` — every value object of a sign-up (valid CPFs and each way to get one
   wrong, phones, emails, names, the 72-byte password limit) and the account's rules (deactivation,
   reactivation and expiry at the deadline). `tests/Unit/Application/Account/` — every use case on the

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Calculator\Electrical;
 
 use App\Domain\Calculator\Calculator;
+use App\Domain\Calculator\CalculatorGroup;
 use App\Domain\Calculator\Electrical\Nbr5410\BreakerRatings;
 use App\Domain\Calculator\Electrical\Nbr5410\ConductorTable;
 use App\Domain\Calculator\FixedUnit;
@@ -37,6 +38,14 @@ final readonly class BreakerAndWiring implements Calculator
     public function id(): string
     {
         return 'breaker-and-wiring';
+    }
+
+    /**
+     * The tool's group.
+     */
+    public function group(): CalculatorGroup
+    {
+        return CalculatorGroup::Electrical;
     }
 
     /**

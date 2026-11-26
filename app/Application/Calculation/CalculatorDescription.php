@@ -10,10 +10,12 @@ namespace App\Application\Calculation;
 final readonly class CalculatorDescription
 {
     /**
+     * @param  string  $group  The group it is listed under, such as "electrical".
      * @param  list<InputDescription>  $inputs
      */
     public function __construct(
         public string $id,
+        public string $group,
         public array $inputs,
     ) {}
 }

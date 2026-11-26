@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Calculator\Construction;
 
 use App\Domain\Calculator\Calculator;
+use App\Domain\Calculator\CalculatorGroup;
 use App\Domain\Calculator\FixedUnit;
 use App\Domain\Calculator\InputField;
 use App\Domain\Calculator\Inputs;
@@ -30,6 +31,14 @@ final readonly class BlockCount implements Calculator
     public function id(): string
     {
         return 'block-count';
+    }
+
+    /**
+     * The tool's group.
+     */
+    public function group(): CalculatorGroup
+    {
+        return CalculatorGroup::Construction;
     }
 
     /**

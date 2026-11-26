@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Application\Calculation\Calculate;
+use App\Application\Calculation\DescribeCalculator;
 use App\Application\Calculation\ListCalculators;
 use App\Application\UnitConversion\ConvertQuantity;
 use App\Application\UnitConversion\ListConvertibleUnits;
@@ -92,9 +93,13 @@ final class AppServiceProvider extends ServiceProvider
             $app->make(CalculatorCatalog::class),
             $app->make(UnitCatalogue::class),
         ));
-        $this->app->bind(ListCalculators::class, fn (Application $app): ListCalculators => new ListCalculators(
+        $this->app->bind(DescribeCalculator::class, fn (Application $app): DescribeCalculator => new DescribeCalculator(
             $app->make(CalculatorCatalog::class),
             $app->make(UnitCatalogue::class),
+        ));
+        $this->app->bind(ListCalculators::class, fn (Application $app): ListCalculators => new ListCalculators(
+            $app->make(CalculatorCatalog::class),
+            $app->make(DescribeCalculator::class),
         ));
     }
 }

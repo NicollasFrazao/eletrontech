@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Calculator\Electrical;
 
 use App\Domain\Calculator\Calculator;
+use App\Domain\Calculator\CalculatorGroup;
 use App\Domain\Calculator\FixedUnit;
 use App\Domain\Calculator\InputField;
 use App\Domain\Calculator\Inputs;
@@ -30,6 +31,14 @@ final readonly class ElectricalCapacitance implements Calculator
     public function id(): string
     {
         return 'electrical-capacitance';
+    }
+
+    /**
+     * The tool's group.
+     */
+    public function group(): CalculatorGroup
+    {
+        return CalculatorGroup::Electrical;
     }
 
     /**

@@ -24,6 +24,7 @@ Route::view('/', 'home')->name('home');
 // Tools (E1 to E3). The forms and the list are open; using a tool needs a licence that covers it (E5).
 Route::get('/tools/unit-converter', [UnitConverterController::class, 'show'])->name('tools.unit-converter');
 Route::get('/tools/calculators', [CalculatorController::class, 'index'])->name('tools.calculators');
+Route::get('/tools/calculators/{calculator}', [CalculatorController::class, 'show'])->name('tools.calculators.show');
 
 Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/tools/unit-converter', [UnitConverterController::class, 'convert'])

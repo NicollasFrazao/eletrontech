@@ -8,7 +8,7 @@ features arrive phase by phase (E1–E10). Done so far:
 
 - the foundation: Laravel skeleton, Docker environment, quality gate, engineering standards;
 - E1: exact physical quantities, with the unit converter at `/tools/unit-converter`;
-- E2 and E3: the 24 calculators of 2015, as JSON at `/tools/calculators`;
+- E2 and E3: the 24 calculators of 2015, as pages and as JSON at `/tools/calculators`;
 - E4: accounts, with sign-up, sign-in, recovery and the profile;
 - E5: packages, licences and the shop at `/shop`. A new account gets the Basic package for seven
   days, and every tool needs a licence that covers it.

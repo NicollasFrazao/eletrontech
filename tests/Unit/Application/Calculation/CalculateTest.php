@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 use App\Application\Calculation\Calculate;
 use App\Application\Calculation\CalculationInput;
+use App\Application\Calculation\CalculatorDescription;
+use App\Application\Calculation\DescribeCalculator;
 use App\Application\Calculation\ListCalculators;
 use App\Application\Calculation\ResultLine;
 use App\Application\UnitConversion\UnitOption;
+use App\Domain\Calculator\Calculator;
 use App\Domain\Calculator\CalculatorCatalog;
+use App\Domain\Calculator\Construction\BtuSizing;
 use App\Domain\Calculator\Electrical\ElectricalCapacitance;
 use App\Domain\Calculator\Electrical\ElectricalConductance;
+use App\Domain\Calculator\Electrical\GeneralPower;
 use App\Domain\Calculator\Electrical\OutletCount;
 use App\Domain\Calculator\Electrical\ResistorColourCode;
 use App\Domain\Calculator\InputProblem;
@@ -86,10 +91,10 @@ it('refuses an unknown calculator', function (): void {
 })->throws(UnknownCalculator::class);
 
 it('lists every calculator with what each input accepts', function (): void {
-    $list = new ListCalculators(new CalculatorCatalog(new OutletCount), new UnitCatalogue)->handle();
+    $list = listCalculators(new OutletCount)->handle();
     [$roomType, $length] = $list->calculators[0]->inputs;
 
-    expect($list->calculators[0]->id)->toBe('outlet-count')
+    expect([$list->calculators[0]->id, $list->calculators[0]->group])->toBe(['outlet-count', 'electrical'])
         ->and([$roomType->name, $roomType->kind, $roomType->isRequired, $roomType->accepts->defaultUnit])
         ->toBe(['room_type', 'choice', true, null])
         ->and($roomType->accepts->options)->toContain('kitchen', 'living_room')
@@ -103,9 +108,39 @@ it('hands a text to the calculator as typed and rounds the number it answers', f
 });
 
 it('describes a text input without units or options', function (): void {
-    $list = new ListCalculators(new CalculatorCatalog(new BasicCalculator), new UnitCatalogue)->handle();
+    $list = listCalculators(new BasicCalculator)->handle();
     [$expression] = $list->calculators[0]->inputs;
 
     expect([$expression->name, $expression->kind, $expression->accepts->defaultUnit, $expression->accepts->units])
         ->toBe(['expression', 'text', null, []]);
 });
+
+it('groups the calculators, the groups in the order their first calculator appears', function (): void {
+    $groups = listCalculators(new OutletCount, new BasicCalculator, new BtuSizing, new GeneralPower)->handle()->byGroup();
+
+    expect(array_keys($groups))->toBe(['electrical', 'mathematics', 'construction'])
+        ->and(array_map(static fn (CalculatorDescription $calculator): string => $calculator->id, $groups['electrical']))
+        ->toBe(['outlet-count', 'general-power']);
+});
+
+it('describes one calculator by its identifier', function (): void {
+    $catalog = new CalculatorCatalog(new OutletCount, new BasicCalculator);
+    $description = new DescribeCalculator($catalog, new UnitCatalogue)->handle('basic-calculator');
+
+    expect([$description->id, $description->group, $description->inputs[0]->name])
+        ->toBe(['basic-calculator', 'mathematics', 'expression']);
+});
+
+it('refuses to describe an unknown calculator', function (): void {
+    new DescribeCalculator(new CalculatorCatalog(new OutletCount), new UnitCatalogue)->handle('warp-drive');
+})->throws(UnknownCalculator::class);
+
+/**
+ * The list use case over a catalogue of these calculators.
+ */
+function listCalculators(Calculator ...$calculators): ListCalculators
+{
+    $catalog = new CalculatorCatalog(...$calculators);
+
+    return new ListCalculators($catalog, new DescribeCalculator($catalog, new UnitCatalogue));
+}
