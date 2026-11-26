@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Administration;
 
-use App\Domain\Account\Account;
 use App\Domain\Account\AccountId;
 use App\Domain\Account\AccountNotFound;
 use App\Domain\Account\AccountRepository;
@@ -14,7 +13,8 @@ use App\Domain\Account\Clock;
 
 /**
  * Reactivates a deactivated account from the admin panel, as its owner's sign-in would, so it is not
- * closed when its deadline passes.
+ * closed when its deadline passes. Unlike a sign-in, it also reactivates an account whose deadline has
+ * passed but which is not closed yet (ADR 0009).
  */
 final readonly class ReactivateAccount
 {
@@ -37,12 +37,8 @@ final readonly class ReactivateAccount
             return;
         }
 
-        $this->accounts->save(new Account(
-            $account->id,
-            $account->details(),
-            $account->access()->withReactivationDeadline(null),
-            $account->profile(),
-        ));
+        $account->reactivate();
+        $this->accounts->save($account);
         $this->activity->record($id, ActivityType::Reactivated, $this->clock->now());
     }
 }

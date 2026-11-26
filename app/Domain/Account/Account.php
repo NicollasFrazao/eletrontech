@@ -13,6 +13,8 @@ use DateTimeImmutable;
  *
  * Deactivating keeps the account for 30 days, as the 2015 version did (`dt_reativar`): signing in
  * before then reactivates it; after then the account is closed.
+ *
+ * @SuppressWarnings("PHPMD.TooManyPublicMethods") The aggregate root: each method is one state change the rules own.
  */
 final class Account
 {
@@ -93,6 +95,15 @@ final class Account
     }
 
     /**
+     * Puts a deactivated account back in use by clearing its deadline, whether or not the deadline has
+     * passed; an active account is left as it is.
+     */
+    public function reactivate(): void
+    {
+        $this->access = $this->access->withReactivationDeadline(null);
+    }
+
+    /**
      * Whether the account is in use, that is not deactivated.
      */
     public function isActive(): bool
@@ -113,7 +124,7 @@ final class Account
             return SignInEffect::Expired;
         }
 
-        $this->access = $this->access->withReactivationDeadline(null);
+        $this->reactivate();
 
         return SignInEffect::Reactivated;
     }

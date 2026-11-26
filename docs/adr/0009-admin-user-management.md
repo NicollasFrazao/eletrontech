@@ -27,7 +27,13 @@ rule. A Filament resource is built on an Eloquent model, and the models live in 
     validated the same way and the CPF and the email stay fixed;
   - **deactivate**: `Administration\DeactivateAccount`, the owner's 30 days without the password
     (the administrator does not know it); signing in before the deadline still reactivates it;
-  - **reactivate**: `Administration\ReactivateAccount`, which clears the deadline;
+  - **reactivate**: `Administration\ReactivateAccount`, which clears the deadline with
+    `Account::reactivate()`, the same rule a sign-in uses. It also reactivates an account whose
+    deadline has passed but which has not been closed yet (closing happens on the next sign-in or
+    sign-up with its CPF or email): such an account is still listed as deactivated, and the
+    administrator's decision, made while the account is still open, overrides the deadline. A sign-in
+    in the same state closes it instead (`SignInEffect::Expired`), since the owner did not come back
+    in time;
   - **delete**: `Administration\CloseAccount`, which closes the account with `AccountCloser`, as an
     expired one is closed: the CPF, email, phone, password and pictures are erased and the name and
     the activity log kept (ADR 0005).

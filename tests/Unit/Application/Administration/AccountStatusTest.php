@@ -69,6 +69,20 @@ it('reactivates a deactivated account and records it, and leaves an active one a
         ->toBe([ActivityType::Registered, ActivityType::Deactivated, ActivityType::Reactivated]);
 });
 
+it('reactivates an account whose deadline passed but which is not closed yet', function (): void {
+    $kit = new AccountKit;
+    $administrator = $kit->registered();
+    $member = $kit->registered('bia@example.com', '111.444.777-35');
+    deactivator($kit)->handle($administrator, $member);
+    $kit->clock->advance('+31 days');
+
+    reactivator($kit)->handle($member);
+
+    expect($kit->accounts->get($member)->isActive())->toBeTrue()
+        ->and($kit->activity->typesOf($member))
+        ->toBe([ActivityType::Registered, ActivityType::Deactivated, ActivityType::Reactivated]);
+});
+
 it('closes an account: erased, its pictures deleted, and recorded', function (): void {
     $kit = new AccountKit;
     $administrator = $kit->registered();
