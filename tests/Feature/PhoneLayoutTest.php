@@ -30,7 +30,7 @@ it('serves the sign-up, sign-in and password pages ready for a phone-sized scree
     'forgot password' => '/forgot-password',
 ]);
 
-it('serves the profile, the shop, the licence, the agenda and the files ready for a phone-sized screen', function (Closure $uri): void {
+it('serves the pages behind sign-in ready for a phone-sized screen', function (Closure $uri): void {
     $this->actingAs(SignedUp::verified())->get($uri())
         ->assertOk()
         ->assertSee('<meta name="viewport" content="width=device-width, initial-scale=1">', false)
@@ -45,6 +45,7 @@ it('serves the profile, the shop, the licence, the agenda and the files ready fo
     'licence' => fn (): string => '/licence',
     'agenda' => fn (): string => '/agenda',
     'file manager' => fn (): string => '/files',
+    'feedback' => fn (): string => '/feedback',
 ]);
 
 it('keeps the desktop layout outside the phone breakpoint', function (): void {

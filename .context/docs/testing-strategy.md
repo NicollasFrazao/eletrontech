@@ -52,7 +52,7 @@ a service. Unit tests never touch the database.
   phone layout (viewport, the `40rem` breakpoint, 44 px touch targets).
 - `tests/Feature/PhoneLayoutTest.php` — every page of the user area and the shop (sign-up, sign-in,
   profile and preferences, the shop, a package, the custom package, the licence, the agenda, the file
-  manager) carries the phone layout of the shared account layout, and the desktop rules stay as they were.
+  manager, the feedback form) carries the phone layout of the shared account layout, and the desktop rules stay as they were.
 - `tests/Feature/AccessibilityTest.php` — the accessibility pass (E9, #64): every page of the user area,
   the tools and the shop, parsed as HTML5 with an error on every field, has a label for each field, each
   error tied to its field by `aria-describedby` (or an alert of the whole form), unique ids, and no action
@@ -137,6 +137,15 @@ a service. Unit tests never touch the database.
   each refused value (6 and 366 days, a negative price, no tool, a long name) on its field with nothing
   stored, the free package edited without price or days, a custom package not found, a tool renamed,
   a taken or blank name refused, and no page to create a tool.
+- `tests/Unit/Domain/Feedback/`, `tests/Unit/Application/Feedback/` — the feedback message (the seven
+  subjects, 1 and 500 characters accepted, an unknown subject and an empty, blank or 501-character
+  message refused on their field) and `SendFeedback` on `tests/Support/Feedback/InMemoryFeedbackBox.php`
+  with a fixed clock: kept with its author and moment, nothing kept when refused.
+- `tests/Feature/Feedback/FeedbackTest.php` — the form (E9, #63) over HTTP on MySQL: the subjects shown,
+  a guest and an unconfirmed account sent away, a message kept with the account and the date, each
+  refused value on its field with nothing kept; and the panel's list: newest first with author, date and
+  subject, searched by text and filtered by subject over Livewire, refused to a member, a guest sent to
+  sign in, and no page to write a message.
 - `tests/Support/Results.php` reads a calculator's result by name: `exact()` (the fraction),
   `shown()` (12 significant digits), `unit()`.
 

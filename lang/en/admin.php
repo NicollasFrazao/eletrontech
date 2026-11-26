@@ -67,6 +67,14 @@ return [
             'taken' => 'Another tool already has this name.',
         ],
     ],
+    'feedback' => [
+        'label' => 'Feedback message',
+        'plural_label' => 'Feedback',
+        'columns' => [
+            'sent_at' => 'Sent at',
+            'author' => 'From',
+        ],
+    ],
     'roles' => [
         'member' => 'Member',
         'administrator' => 'Administrator',

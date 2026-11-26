@@ -210,8 +210,26 @@ E8 (#11) starts with the Filament panel at `/admin`, decided in
   `Administration\CreatePackage` and `ChangePackage` (a `PackageInput` read into the domain's
   `PackageDefinition` and `PackageTerms`: name, tools with the essentials added, price, 7 to 365 days);
   `Infrastructure\Filament\Tools\ToolResource` renames tools through `Administration\RenameTool`.
+- Feedback (E9, #63): `Infrastructure\Filament\Feedback\FeedbackResource` lists the messages of the
+  feedback form, newest first, with their author, date and subject, searched by author or text and
+  filtered by subject; it only reads them (see "Feedback" below).
 - Filament resources live in `app/Infrastructure/Filament/`, since they are built on the Eloquent
   models; they read rows directly and write through Application use cases.
+
+## Feedback
+
+`app/Domain/Feedback/` holds the feedback form of E9 (#63). The 2015 form posted to a remote URL; v2
+keeps each message in the application, with its author and the moment it was sent:
+
+- `Feedback` (a `FeedbackSubject`, the seven subjects of 2015, and a message of 1 to 500 characters),
+  `InvalidFeedback`, which names the `FeedbackField` it refused, and the port `FeedbackBox`.
+- `App\Application\Feedback\SendFeedback` reads a `FeedbackInput` into a `Feedback` and keeps it with
+  the author and the `Clock`'s now.
+- `Infrastructure/Persistence/EloquentFeedbackBox` writes `feedback` (`FeedbackRecord`, which belongs to
+  its author's `User`); `FeedbackServiceProvider` binds the port.
+- `Http/Controllers/Feedback/FeedbackController` serves the form at `GET /feedback` and sends it with
+  `POST /feedback` (signed in, email confirmed, six a minute), linked from the profile. The
+  administrators read the messages in the admin panel (see "Admin panel" above).
 
 ## Errors
 
@@ -231,6 +249,6 @@ the same contract, so every 2015 calculation tool, web or mobile, is in the cata
 spirit level reads a sensor and is not a calculation; see [tech-debt.md](tech-debt.md)). E4 (#7) added
 the accounts (see "Accounts" above), the first repository and the first pages behind sign-in. E5 (#8)
 added the packages, the licences and the shop (see "Packages and licences" above): every tool is now
-behind the `use-tool` gate. E8 (#11) started with the admin panel, its user management and the catalogue of tools and packages (see "Admin panel" above). The rest
+behind the `use-tool` gate. E8 (#11) started with the admin panel, its user management and the catalogue of tools and packages (see "Admin panel" above). E9 (#12) added the calculator pages, the accessibility pass and the feedback form (see "Feedback" above). The rest
 is the context-base tooling in `app/Console/` (`context:export`, `context:check`) and the framework
 defaults.
