@@ -1,7 +1,7 @@
 # 0008. The admin panel with Filament, behind a role column on the account
 
 - Status: Accepted
-- Date: 2026-11-27
+- Date: 2026-11-26
 - Issues: #56 (E8, first step of #11)
 
 ## Context
