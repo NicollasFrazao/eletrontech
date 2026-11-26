@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Calculator\Electrical;
 
 use App\Domain\Calculator\Calculator;
+use App\Domain\Calculator\CalculatorGroup;
 use App\Domain\Calculator\FixedUnit;
 use App\Domain\Calculator\InputField;
 use App\Domain\Calculator\InputProblem;
@@ -49,6 +50,14 @@ final readonly class ResistorColourCode implements Calculator
     public function id(): string
     {
         return 'resistor-colour-code';
+    }
+
+    /**
+     * The tool's group.
+     */
+    public function group(): CalculatorGroup
+    {
+        return CalculatorGroup::Electrical;
     }
 
     /**

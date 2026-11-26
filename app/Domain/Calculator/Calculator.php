@@ -21,6 +21,11 @@ interface Calculator
     public function id(): string;
 
     /**
+     * The group the tool is listed under.
+     */
+    public function group(): CalculatorGroup;
+
+    /**
      * The inputs the tool reads, in the order a form shows them.
      *
      * @return non-empty-list<InputField>

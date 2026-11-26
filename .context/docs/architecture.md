@@ -118,9 +118,13 @@ for a client that asks for it).
   sharing `MaterialCount` and `WasteAllowance`; `BtuSizing`).
 
 `App\Application\Calculation\Calculate` runs any of them: it reads the typed values by the schema, calls
-the calculator and rounds each number to 12 significant digits; `ListCalculators` describes the schemas.
-`App\Http\Controllers\Tools\CalculatorController` serves both as JSON (`GET /tools/calculators`,
-`POST /tools/calculators/{id}`), mapping `InvalidInput` to a validation error on its field.
+the calculator and rounds each number to 12 significant digits; `DescribeCalculator` describes one schema
+and `ListCalculators` all of them, each with the `CalculatorGroup` its calculator declares.
+`App\Http\Controllers\Tools\CalculatorController` serves them as pages (E9, #65: the list by group at
+`GET /tools/calculators`, a form built from the schema at `GET /tools/calculators/{id}`, the result lines
+after `POST /tools/calculators/{id}`) and as JSON to a client that asks for it, mapping `InvalidInput` to a
+validation error on its field. The labels are in `lang/en/calculators.php`: the calculator names, the groups,
+one `fields` vocabulary shared by inputs and result values, and the options of every choice.
 
 ## Accounts
 

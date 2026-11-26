@@ -15,4 +15,20 @@ final readonly class CalculatorList
     public function __construct(
         public array $calculators,
     ) {}
+
+    /**
+     * The calculators under their group, the groups in the order their first calculator appears.
+     *
+     * @return array<string, non-empty-list<CalculatorDescription>> Keyed by group, such as "electrical".
+     */
+    public function byGroup(): array
+    {
+        $groups = [];
+
+        foreach ($this->calculators as $calculator) {
+            $groups[$calculator->group][] = $calculator;
+        }
+
+        return $groups;
+    }
 }

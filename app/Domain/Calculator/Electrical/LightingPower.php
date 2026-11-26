@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Calculator\Electrical;
 
 use App\Domain\Calculator\Calculator;
+use App\Domain\Calculator\CalculatorGroup;
 use App\Domain\Calculator\Electrical\Nbr5410\LightingLoad;
 use App\Domain\Calculator\FixedUnit;
 use App\Domain\Calculator\InputField;
@@ -25,6 +26,14 @@ final readonly class LightingPower implements Calculator
     public function id(): string
     {
         return 'lighting-power';
+    }
+
+    /**
+     * The tool's group.
+     */
+    public function group(): CalculatorGroup
+    {
+        return CalculatorGroup::Electrical;
     }
 
     /**

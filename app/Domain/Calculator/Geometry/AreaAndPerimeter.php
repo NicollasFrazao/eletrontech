@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Calculator\Geometry;
 
 use App\Domain\Calculator\Calculator;
+use App\Domain\Calculator\CalculatorGroup;
 use App\Domain\Calculator\FixedUnit;
 use App\Domain\Calculator\InputField;
 use App\Domain\Calculator\InputProblem;
@@ -37,6 +38,14 @@ final readonly class AreaAndPerimeter implements Calculator
     public function id(): string
     {
         return 'area-and-perimeter';
+    }
+
+    /**
+     * The tool's group.
+     */
+    public function group(): CalculatorGroup
+    {
+        return CalculatorGroup::Geometry;
     }
 
     /**

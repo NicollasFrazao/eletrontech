@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Calculator\Mathematics;
 
 use App\Domain\Calculator\Calculator;
+use App\Domain\Calculator\CalculatorGroup;
 use App\Domain\Calculator\InputField;
 use App\Domain\Calculator\Inputs;
 use App\Domain\Calculator\InvalidInput;
@@ -25,6 +26,14 @@ final readonly class BasicCalculator implements Calculator
     public function id(): string
     {
         return 'basic-calculator';
+    }
+
+    /**
+     * The tool's group.
+     */
+    public function group(): CalculatorGroup
+    {
+        return CalculatorGroup::Mathematics;
     }
 
     /**

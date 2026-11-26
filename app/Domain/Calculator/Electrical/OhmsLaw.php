@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Calculator\Electrical;
 
 use App\Domain\Calculator\Calculator;
+use App\Domain\Calculator\CalculatorGroup;
 use App\Domain\Calculator\FixedUnit;
 use App\Domain\Calculator\InputField;
 use App\Domain\Calculator\Inputs;
@@ -49,6 +50,14 @@ final readonly class OhmsLaw implements Calculator
     public function id(): string
     {
         return 'ohms-law';
+    }
+
+    /**
+     * The tool's group.
+     */
+    public function group(): CalculatorGroup
+    {
+        return CalculatorGroup::Electrical;
     }
 
     /**
