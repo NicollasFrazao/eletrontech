@@ -16,6 +16,21 @@
         section { margin-top: 2rem; }
         .status { padding: .5rem; background: #dcfce7; color: #14532d; }
         .error { color: #b91c1c; font-size: .9rem; }
+        h1, h2, p, li, dd, nav { overflow-wrap: anywhere; }
+        /*
+         * Phones (E9, #62): one column, full-width controls and links with a 44 px touch target, no horizontal
+         * scroll. Every page of the user area and the shop uses this layout, so the rules live here once.
+         */
+        @media (max-width: 40rem) {
+            main { padding: 1.5rem 1rem; }
+            h1 { font-size: 1.5rem; }
+            ul { padding-left: 1.25rem; }
+            fieldset { min-width: 0; margin: 1rem 0 0; }
+            input, select, textarea, button { box-sizing: border-box; display: block; width: 100%; max-width: none; min-height: 44px; font: inherit; }
+            input[type=checkbox] { display: inline-block; width: 1.5rem; min-height: 1.5rem; height: 1.5rem; margin: 0; flex: none; }
+            label:has(> input[type=checkbox]) { display: flex; align-items: center; gap: .5rem; min-height: 44px; }
+            main a { display: inline-flex; align-items: center; min-height: 44px; }
+        }
     </style>
 </head>
 <body @class(['night' => $nightMode ?? false])>
