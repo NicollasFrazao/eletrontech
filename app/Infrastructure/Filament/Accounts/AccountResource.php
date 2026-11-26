@@ -10,7 +10,7 @@ use BackedEnum;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Resource;
+use Filament\Resources\Resource as FilamentResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -26,9 +26,9 @@ use Override;
  * panel follows the same rules as the owner's own pages. Closed accounts are not listed, as the
  * repository never finds them, and accounts are created by signing up only.
  *
- * @extends resource<User>
+ * @extends FilamentResource<User>
  */
-final class AccountResource extends Resource
+final class AccountResource extends FilamentResource
 {
     protected static ?string $model = User::class;
 

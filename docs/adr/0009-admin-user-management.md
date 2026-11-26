@@ -1,7 +1,7 @@
 # 0009. User management in the admin panel: Filament resources in Infrastructure, changes through use cases
 
 - Status: Accepted
-- Date: 2026-11-28
+- Date: 2026-11-26
 - Issues: #57 (E8, part of #11)
 
 ## Context
