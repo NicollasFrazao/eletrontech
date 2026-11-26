@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Support\Licensing;
 
+use App\Domain\Licensing\CatalogueName;
 use App\Domain\Licensing\Tool;
 use App\Domain\Licensing\ToolId;
+use App\Domain\Licensing\ToolNameTaken;
 use App\Domain\Licensing\ToolRepository;
+use App\Domain\Licensing\UnknownTool;
 
 /**
  * Tools kept in memory: ohms-law, unit-converter, general-power, basic-calculator and rule-of-three unless
@@ -42,5 +45,20 @@ final class InMemoryToolRepository implements ToolRepository
     public function exists(ToolId $id): bool
     {
         return isset($this->tools[$id->value]);
+    }
+
+    public function rename(ToolId $id, CatalogueName $name): void
+    {
+        if (! $this->exists($id)) {
+            throw UnknownTool::withId($id->value);
+        }
+
+        foreach ($this->tools as $tool) {
+            if ($tool->name === $name->value && $tool->id->value !== $id->value) {
+                throw ToolNameTaken::named($name);
+            }
+        }
+
+        $this->tools[$id->value] = new Tool($id, $name->value);
     }
 }

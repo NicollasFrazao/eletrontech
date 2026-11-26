@@ -116,13 +116,21 @@ a service. Unit tests never touch the database.
 - `tests/Unit/Application/Administration/` — the panel's access rule and the administrator's actions
   on an account (deactivate without the password, keep the deadline of one deactivated already,
   reactivate, close with its pictures deleted, refuse one's own account, a closed or unknown account
-  not found), on the in-memory adapters.
+  not found), on the in-memory adapters; the catalogue use cases (a package created with the
+  essentials, its price and days, each refused value storing nothing, 7 and 365 days accepted, the free
+  package changed without terms, a custom or unknown package not found, a tool renamed, a taken or
+  blank name refused). `tests/Unit/Domain/Licensing/CatalogueTest.php` — names, prices at their edges,
+  and package definitions with the essentials added.
 - `tests/Feature/Administration/` — `/admin` over HTTP (an administrator, a member, an unconfirmed
   account, a guest, a closed account) and the account pages over Livewire on MySQL: a member refused,
   closed accounts not listed, the search by name, email, CPF with or without punctuation and id, the
   edit through `UpdateProfile` (CPF and email fixed, a refused phone on its field), deactivate and
   reactivate, delete as closure, from the list and from the edit page, and no deactivate or delete on
-  one's own row.
+  one's own row. `CatalogueManagementTest.php`: the package and tool pages refused to a member, the
+  packages listed without custom ones, a package created and edited with its tools, price and days,
+  each refused value (6 and 366 days, a negative price, no tool, a long name) on its field with nothing
+  stored, the free package edited without price or days, a custom package not found, a tool renamed,
+  a taken or blank name refused, and no page to create a tool.
 - `tests/Support/Results.php` reads a calculator's result by name: `exact()` (the fraction),
   `shown()` (12 significant digits), `unit()`.
 

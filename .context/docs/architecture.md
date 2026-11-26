@@ -157,7 +157,9 @@ one `fields` vocabulary shared by inputs and result values, and the options of e
 
 - `Package` (free, ready-made or custom, with its `ToolId`s), `Licence` (a holder, a package, a
   period: `initial()`, `renewedWith()`, `remainingDaysAt()`, and `allows()`, the one access rule),
-  `UsageDays` (7 to 365), `Tool`. Ports: `PackageRepository`, `ToolRepository`, `LicenceRepository`,
+  `UsageDays` (7 to 365), `Tool`; for the admin panel's writes, `CatalogueName`, `Price`,
+  `PackageTerms` (a price for some days) and `PackageDefinition` (a name and tools, the essentials
+  added). Ports: `PackageRepository`, `ToolRepository`, `LicenceRepository`,
   `ToolUseLog`.
 - `app/Application/Licensing/`: `GrantInitialLicence`, `BuyPackage` (with `PasswordConfirmation`),
   `AuthoriseToolUse`, `RecordToolUse`, `ShowLicence`, `ShowShop`. `Application/Account/SignUp`
@@ -203,6 +205,11 @@ E8 (#11) starts with the Filament panel at `/admin`, decided in
   the phone, and `App\Application\Administration\DeactivateAccount`, `ReactivateAccount` and
   `CloseAccount` (delete = close, as ADR 0005 closes an expired account). An administrator cannot
   deactivate or delete their own account (`OwnAccountRefused`).
+- The catalogue ([ADR 0010](/docs/adr/0010-admin-catalogue.md)): `Infrastructure\Filament\Packages\PackageResource`
+  lists the free and ready-made packages and creates and changes them through
+  `Administration\CreatePackage` and `ChangePackage` (a `PackageInput` read into the domain's
+  `PackageDefinition` and `PackageTerms`: name, tools with the essentials added, price, 7 to 365 days);
+  `Infrastructure\Filament\Tools\ToolResource` renames tools through `Administration\RenameTool`.
 - Filament resources live in `app/Infrastructure/Filament/`, since they are built on the Eloquent
   models; they read rows directly and write through Application use cases.
 
@@ -224,6 +231,6 @@ the same contract, so every 2015 calculation tool, web or mobile, is in the cata
 spirit level reads a sensor and is not a calculation; see [tech-debt.md](tech-debt.md)). E4 (#7) added
 the accounts (see "Accounts" above), the first repository and the first pages behind sign-in. E5 (#8)
 added the packages, the licences and the shop (see "Packages and licences" above): every tool is now
-behind the `use-tool` gate. E8 (#11) started with the admin panel and its user management (see "Admin panel" above). The rest
+behind the `use-tool` gate. E8 (#11) started with the admin panel, its user management and the catalogue of tools and packages (see "Admin panel" above). The rest
 is the context-base tooling in `app/Console/` (`context:export`, `context:check`) and the framework
 defaults.

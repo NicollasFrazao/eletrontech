@@ -29,4 +29,12 @@ interface ToolRepository
      * Whether a tool has the identifier.
      */
     public function exists(ToolId $id): bool;
+
+    /**
+     * Gives the tool another name.
+     *
+     * @throws UnknownTool When no tool has the identifier.
+     * @throws ToolNameTaken When another tool has the name.
+     */
+    public function rename(ToolId $id, CatalogueName $name): void;
 }

@@ -16,9 +16,11 @@ use App\Domain\Licensing\EmptyCustomPackage;
 use App\Domain\Licensing\InvalidUsageDays;
 use App\Domain\Licensing\Licence;
 use App\Domain\Licensing\Package;
+use App\Domain\Licensing\PackageDefinition;
 use App\Domain\Licensing\PackageId;
 use App\Domain\Licensing\PackageNotForSale;
 use App\Domain\Licensing\PackageRepository;
+use App\Domain\Licensing\PackageTerms;
 use App\Domain\Licensing\Tool;
 use App\Domain\Licensing\ToolId;
 use App\Domain\Licensing\UnknownPackage;
@@ -176,6 +178,16 @@ it('refuses to start a licence with a free package that is not free, and a malfo
         public function customFor(AccountId $owner, array $tools): Package
         {
             return $this->inner->customFor($owner, $tools);
+        }
+
+        public function add(PackageDefinition $definition, PackageTerms $terms): PackageId
+        {
+            return $this->inner->add($definition, $terms);
+        }
+
+        public function change(PackageId $id, PackageDefinition $definition, ?PackageTerms $terms): void
+        {
+            $this->inner->change($id, $definition, $terms);
         }
     };
 

@@ -32,4 +32,14 @@ final readonly class ToolId
 
         return new self($text);
     }
+
+    /**
+     * The everyday tools every package carries (`Package::ESSENTIALS`), whose identifiers are known good.
+     *
+     * @return non-empty-list<self>
+     */
+    public static function essentials(): array
+    {
+        return array_map(static fn (string $id): self => new self($id), Package::ESSENTIALS);
+    }
 }
